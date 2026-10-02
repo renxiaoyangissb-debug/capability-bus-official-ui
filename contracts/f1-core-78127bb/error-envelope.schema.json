@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://capability-bus.local/contracts/v0.1/error-envelope.schema.json",
+  "title": "ErrorEnvelope v0.1 candidate",
+  "type": "object",
+  "required": ["code", "message", "retryable"],
+  "additionalProperties": false,
+  "properties": {
+    "code": {"type": "string", "pattern": "^[A-Z0-9_]{1,128}$"},
+    "message": {"type": "string", "maxLength": 512},
+    "retryable": {"type": "boolean"},
+    "details": {"type": ["object", "null"]}
+  }
+}

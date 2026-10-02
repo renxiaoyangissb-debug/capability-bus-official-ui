@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://capability-bus.local/contracts/v0.1/lifecycle.schema.json",
+  "title": "Plugin lifecycle v0.1 candidate",
+  "type": "object",
+  "required": ["state", "trust_zone"],
+  "additionalProperties": false,
+  "properties": {
+    "state": {"enum": ["discovered", "registered", "disabled", "enabled", "starting", "healthy", "degraded", "failed", "stopped", "removed"]},
+    "trust_zone": {"enum": ["quarantine", "untrusted", "trusted"]}
+  }
+}

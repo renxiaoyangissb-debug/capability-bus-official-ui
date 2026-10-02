@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://capability-bus.local/contracts/v0.1/event-envelope.schema.json",
+  "title": "EventEnvelope v0.1 candidate",
+  "type": "object",
+  "required": ["event_id", "type", "source", "trace_id", "data", "occurred_at", "protocol_version"],
+  "additionalProperties": false,
+  "properties": {
+    "event_id": {"type": "string", "pattern": "^evt_[0-9a-f]{32}$"},
+    "type": {"type": "string", "pattern": "^[a-z0-9](?:[a-z0-9_-]*[a-z0-9])?(?:\\.[a-z0-9](?:[a-z0-9_-]*[a-z0-9])?)+$"},
+    "source": {"type": "string", "minLength": 1},
+    "trace_id": {"type": "string"},
+    "data": {"type": "object"},
+    "content_ref": {"anyOf": [{"$ref": "content-ref.schema.json"}, {"type": "null"}]},
+    "occurred_at": {"type": "string", "format": "date-time"},
+    "protocol_version": {"const": "0.1.0-alpha.1"}
+  }
+}

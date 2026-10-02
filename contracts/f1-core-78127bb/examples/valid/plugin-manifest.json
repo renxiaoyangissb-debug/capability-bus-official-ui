@@ -1,0 +1,32 @@
+{
+  "manifest_version": "0.1.0-alpha.1",
+  "id": "example.echo",
+  "version": "0.1.0-alpha.1",
+  "kind": "tool",
+  "runtime": {
+    "type": "process",
+    "command": "plugin.py",
+    "args": []
+  },
+  "provides": [
+    {
+      "capability": "example.echo",
+      "operation": "command",
+      "input_schema": "schemas/echo-input.json",
+      "output_schema": "schemas/echo-output.json"
+    }
+  ],
+  "consumes": [],
+  "permissions": {
+    "network": [],
+    "filesystem": {"read": [], "write": []},
+    "workspaces": [],
+    "secrets": []
+  },
+  "resources": {
+    "max_concurrency": 1,
+    "timeout_seconds": 2,
+    "disk_min_free_mb": 0
+  },
+  "config_schema": "schemas/config.json"
+}

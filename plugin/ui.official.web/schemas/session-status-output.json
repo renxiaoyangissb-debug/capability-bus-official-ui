@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["phase", "http_listening", "production_web_security"],
+  "properties": {
+    "phase": { "const": "U1-shell" },
+    "http_listening": { "const": false },
+    "production_web_security": { "const": false }
+  }
+}

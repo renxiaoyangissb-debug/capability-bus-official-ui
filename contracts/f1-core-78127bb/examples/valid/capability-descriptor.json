@@ -1,0 +1,6 @@
+{
+  "capability": "example.echo",
+  "operation": "command",
+  "input_schema": "schemas/echo-input.json",
+  "output_schema": "schemas/echo-output.json"
+}

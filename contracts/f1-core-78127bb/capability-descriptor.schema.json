@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://capability-bus.local/contracts/v0.1/capability-descriptor.schema.json",
+  "title": "Capability descriptor v0.1 candidate",
+  "type": "object",
+  "required": ["capability", "operation", "input_schema", "output_schema"],
+  "additionalProperties": false,
+  "properties": {
+    "capability": {"type": "string", "pattern": "^[a-z0-9](?:[a-z0-9_-]*[a-z0-9])?(?:\\.[a-z0-9](?:[a-z0-9_-]*[a-z0-9])?)+$"},
+    "operation": {"enum": ["query", "command"]},
+    "input_schema": {"type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"},
+    "output_schema": {"type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"}
+  }
+}

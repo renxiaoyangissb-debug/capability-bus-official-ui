@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://capability-bus.local/contracts/v0.1/audit-page.schema.json",
+  "title": "Audit page v0.1 candidate",
+  "type": "object",
+  "required": ["items", "next_cursor"],
+  "additionalProperties": false,
+  "properties": {
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["audit_id", "request_id", "trace_id", "subject_id", "capability", "decision", "reason_code", "payload_keys", "created_at"],
+        "additionalProperties": false,
+        "properties": {
+          "audit_id": {"type": "integer", "minimum": 1},
+          "request_id": {"type": "string", "minLength": 1},
+          "trace_id": {"type": "string", "minLength": 1},
+          "subject_id": {"type": "string", "minLength": 1},
+          "capability": {"type": "string", "pattern": "^[a-z0-9](?:[a-z0-9_-]*[a-z0-9])?(?:\\.[a-z0-9](?:[a-z0-9_-]*[a-z0-9])?)+$"},
+          "decision": {"enum": ["allow", "deny", "error"]},
+          "reason_code": {"type": "string", "minLength": 1},
+          "provider_system_id": {"type": ["string", "null"]},
+          "payload_keys": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+          "created_at": {"type": "string", "format": "date-time"}
+        }
+      }
+    },
+    "next_cursor": {"type": ["integer", "null"], "minimum": 1}
+  }
+}

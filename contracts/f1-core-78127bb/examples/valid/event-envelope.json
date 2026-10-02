@@ -1,0 +1,15 @@
+{
+  "event_id": "evt_55555555555555555555555555555555",
+  "type": "content.created",
+  "source": "plugin_44444444444444444444444444444444",
+  "trace_id": "trace_22222222222222222222222222222222",
+  "data": {"item_id": "item-1"},
+  "content_ref": {
+    "uri": "artifact://workspace/item-1",
+    "media_type": "text/plain",
+    "sha256": null,
+    "size": 5
+  },
+  "occurred_at": "2026-10-01T00:00:02Z",
+  "protocol_version": "0.1.0-alpha.1"
+}

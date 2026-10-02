@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://capability-bus.local/contracts/v0.1/result-envelope.schema.json",
+  "title": "ResultEnvelope v0.1 candidate",
+  "type": "object",
+  "required": ["request_id", "trace_id", "provider_id", "ok", "data", "error", "created_at", "protocol_version"],
+  "additionalProperties": false,
+  "anyOf": [
+    {"properties": {"ok": {"const": true}, "error": {"type": "null"}}},
+    {"properties": {"ok": {"const": false}, "error": {"$ref": "error-envelope.schema.json"}}}
+  ],
+  "properties": {
+    "request_id": {"type": "string", "minLength": 1},
+    "trace_id": {"type": "string", "minLength": 1},
+    "provider_id": {"type": "string", "minLength": 1},
+    "ok": {"type": "boolean"},
+    "data": {"type": "object"},
+    "error": {"anyOf": [{"$ref": "error-envelope.schema.json"}, {"type": "null"}]},
+    "created_at": {"type": "string", "format": "date-time"},
+    "protocol_version": {"const": "0.1.0-alpha.1"}
+  }
+}

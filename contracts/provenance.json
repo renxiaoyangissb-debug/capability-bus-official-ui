@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "authority": "capability-bus-core",
+  "core_commit": "78127bb9192aa6ddf8f15b544c553c149415c5a5",
+  "protocol_version": "0.1.0-alpha.1",
+  "source_path": "contracts/v0.1",
+  "snapshot_path": "contracts/f1-core-78127bb",
+  "reference_files": {
+    "src/capability_bus_core/fake_core.py": {
+      "git_blob": "0e86968c8a9139eaf4f3d64c4e67a3d244d560be",
+      "sha256": "8f99817f9b366fed8d399a48db98ed8303274f3e16bb1b9d192d5fa1db73d548"
+    },
+    "src/capability_bus_core/conformance.py": {
+      "git_blob": "b658306e0647df3f10a1d4e3ae01d7ab6b9418e6",
+      "sha256": "624a8c6da426d3f52368dfab013c3df2a0d106f2fee0dcf2190113b782f8e40a"
+    },
+    "src/capability_bus_core/schema_validation.py": {
+      "git_blob": "4a8ceaa682f768a00ad483ce6ca4b2a58be03ecb",
+      "sha256": "dd50062b5b286094a4d05c83ea32e5852002e7c2928da529baa5033bc37eb86c"
+    },
+    "src/capability_bus_sdk/contracts.py": {
+      "git_blob": "e794a1d43cd0a52d05edd209d4b24fb288c7164e",
+      "sha256": "db61c18cec85eb03a996fe1fad53b91e9f020140b5a3a7aa433e25b1bf3a40fd"
+    },
+    "tests/test_conformance.py": {
+      "git_blob": "2861bc00b8b9533bb7d2970c811b6bdfe880fa47",
+      "sha256": "7d0a571fac65819da9b08c0ae90f54a018d81d2f0e7d4b7156bb52811474472f"
+    },
+    "docs/testing/t2-verification.md": {
+      "git_blob": "9334e201ed3749da9e0b01ff51116ae0d55be18f",
+      "sha256": "4bcc785572855dba469bdf57a0d47c43bfa5b824121090c680751be4a551ab41"
+    }
+  },
+  "files": {
+    "README.md": "8d1fb16eaac6bb660563637391e348fb4ea4be85b6db7b7f47948ffa94b02b64",
+    "audit-page.schema.json": "5a93f4f8aa73b7b070acba5d98c27d945d7329ffbcd2b7a89543fc57401a0970",
+    "capability-descriptor.schema.json": "92b54d5eba8fe1951bd03fb03d482c51de995c50dc1884b4af748fc20d7646f7",
+    "content-ref.schema.json": "1d56d24fa43a3f0b1c3f018a111602c783fee88a1269bb34e541bfefed9fe61b",
+    "error-envelope.schema.json": "13e2c2c8a772b9a9959c28b75ddd55225faa80fea630f8ce6c63fe84f52d3f93",
+    "event-envelope.schema.json": "8f14cddabd0d9d05ab0e5897d83b6b556ea266c1291842758bf3911c48437ec9",
+    "examples/errors/grant-provider-denied.json": "c177c202adbd23d33e03fafa8258ad1c61cfce0566f5cd7b9260c22de0eaae32",
+    "examples/invalid/lifecycle-trusted-bypass.json": "5c2e07e7f8f55e7ae6f3fbf309e4bfc3a389c73907a5b752e37a24306e8b5d9a",
+    "examples/invalid/manifest-in-process.json": "0120678df7b8dcb86963e260dfe60f8fc8def0f001ca0220546f3249221a7189",
+    "examples/invalid/request-inline-secret.json": "661500c2a1c3e3aa29f96e07669bf2d803e51277f9c1728da2784eedfefa0893",
+    "examples/invalid/secret-ref-plaintext.json": "312255cd6e8cf1397e642fd46843cccee331253ad039678687210eab459dbdd0",
+    "examples/valid/audit-page.json": "d3a9a9003e6c1f6430a86978892dec8c904a276f38d319af45d66bd109185beb",
+    "examples/valid/capability-descriptor.json": "a4278f38d4457b8eabf33830f89f0cbefc146df1aad53a79aab9efef2ff95aa5",
+    "examples/valid/content-ref.json": "4cbe1a033182e1df69052f2464a908ff61d7dac41caf91fdcdcfb27a5d930387",
+    "examples/valid/event-envelope.json": "587d4843ac61ce52816dd868149cf0849f9163d337c7feb0fec826631aa9da87",
+    "examples/valid/grant.json": "aeeec1f63e14b78fb17f7b013d2aa9487ad9ec732730b60e18293d59bd94870f",
+    "examples/valid/lifecycle.json": "adff0a90cda36fe84f7383dc811354d342a33e4c65dee5b23b241c88e75d8c47",
+    "examples/valid/plugin-manifest.json": "57c74a7ea3da65188233dcd2efa22847b0cff139a177214e248f814a316cc088",
+    "examples/valid/request-envelope.json": "efbd01b3cced2dd24d60345d67618f83d0d9031b329d7539ac3299f25cdabfef",
+    "examples/valid/result-envelope.json": "9a38fe837e326b8a479fefb2121aca1d7e46a08ff198db1e6ef7da254d176bcc",
+    "examples/valid/secret-ref.json": "80a8ea26e316adc13bb17c15d125ad2dd508e21a779778fac3b3652666c05a76",
+    "grant.schema.json": "0a2876ad6b52e90a2620ccddca1cf07e1e378193e238b66432b40a8a89df4f03",
+    "lifecycle.schema.json": "dbbb421477fa3246f8b022846b115f12b00c1da1e0595aa8e1cf54246f22db60",
+    "plugin-manifest.schema.json": "f2cb311fbd8486570d7997b84a2d66fd64e0188c1ee7d425bec92825e7f06c21",
+    "request-envelope.schema.json": "758c6b8e24ec325b9fd6457d778eb6d446e2a6357360bc93c1f41215c475d5fd",
+    "result-envelope.schema.json": "0fc4554eb5cef00c354bbe591a933ce59542b3eced78d7db19dce57fdcd68a77",
+    "secret-ref.schema.json": "368468b1c49820706997f4d2a45223e9c295c5e9d60f3908e1a23b42b9c7b558"
+  }
+}

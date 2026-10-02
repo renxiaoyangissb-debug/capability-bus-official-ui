@@ -1,0 +1,43 @@
+{
+  "manifest_version": "0.1.0-alpha.1",
+  "id": "ui.official.web",
+  "version": "0.1.0-alpha.1",
+  "kind": "interface",
+  "runtime": {
+    "type": "process",
+    "command": "server/plugin.py",
+    "args": []
+  },
+  "provides": [
+    {
+      "capability": "ui.session.status",
+      "operation": "query",
+      "input_schema": "schemas/session-status-input.json",
+      "output_schema": "schemas/session-status-output.json"
+    }
+  ],
+  "consumes": [
+    "system.status.get",
+    "system.plugins.list",
+    "system.plugins.inspect",
+    "system.capabilities.list",
+    "system.capabilities.describe",
+    "system.grants.list",
+    "system.audit.list"
+  ],
+  "permissions": {
+    "network": ["loopback-bind:127.0.0.1"],
+    "filesystem": {
+      "read": ["plugin-package://ui.official.web/web"],
+      "write": ["plugin-data://ui.official.web"]
+    },
+    "workspaces": [],
+    "secrets": []
+  },
+  "resources": {
+    "max_concurrency": 4,
+    "timeout_seconds": 5,
+    "disk_min_free_mb": 32
+  },
+  "config_schema": "schemas/config.json"
+}

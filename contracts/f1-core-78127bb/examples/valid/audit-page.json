@@ -1,0 +1,17 @@
+{
+  "items": [
+    {
+      "audit_id": 1,
+      "request_id": "req_11111111111111111111111111111111",
+      "trace_id": "trace_22222222222222222222222222222222",
+      "subject_id": "owner:local",
+      "capability": "example.echo",
+      "decision": "allow",
+      "reason_code": "ALLOW",
+      "provider_system_id": "plugin_44444444444444444444444444444444",
+      "payload_keys": ["message"],
+      "created_at": "2026-10-01T00:00:01Z"
+    }
+  ],
+  "next_cursor": null
+}

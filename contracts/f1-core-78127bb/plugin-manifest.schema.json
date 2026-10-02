@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://capability-bus.local/contracts/v0.1/plugin-manifest.schema.json",
+  "title": "Plugin Manifest v0.1 candidate",
+  "type": "object",
+  "required": ["manifest_version", "id", "version", "kind", "runtime", "provides", "consumes", "permissions", "resources", "config_schema"],
+  "additionalProperties": false,
+  "properties": {
+    "manifest_version": {"const": "0.1.0-alpha.1"},
+    "id": {"type": "string", "pattern": "^[a-z0-9]+(?:[._-][a-z0-9]+)*$"},
+    "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:[-+][0-9A-Za-z.-]+)?$"},
+    "kind": {"type": "string", "minLength": 1},
+    "runtime": {
+      "type": "object",
+      "required": ["type", "command", "args"],
+      "additionalProperties": false,
+      "properties": {
+        "type": {"const": "process"},
+        "command": {"type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+\\.py$"},
+        "args": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+      }
+    },
+    "provides": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"$ref": "capability-descriptor.schema.json"}
+    },
+    "consumes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^[a-z0-9](?:[a-z0-9_-]*[a-z0-9])?(?:\\.[a-z0-9](?:[a-z0-9_-]*[a-z0-9])?)+$"}
+    },
+    "permissions": {
+      "type": "object",
+      "required": ["network", "filesystem", "workspaces", "secrets"],
+      "additionalProperties": false,
+      "properties": {
+        "network": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "filesystem": {
+          "type": "object",
+          "required": ["read", "write"],
+          "additionalProperties": false,
+          "properties": {
+            "read": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+            "write": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
+          }
+        },
+        "workspaces": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "secrets": {"type": "array", "items": {"type": "string", "pattern": "^secretref://.+$"}, "uniqueItems": true}
+      }
+    },
+    "resources": {
+      "type": "object",
+      "required": ["max_concurrency", "timeout_seconds", "disk_min_free_mb"],
+      "additionalProperties": false,
+      "properties": {
+        "max_concurrency": {"type": "integer", "minimum": 1},
+        "timeout_seconds": {"type": "integer", "minimum": 1},
+        "disk_min_free_mb": {"type": "integer", "minimum": 0}
+      }
+    },
+    "config_schema": {"type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"}
+  }
+}

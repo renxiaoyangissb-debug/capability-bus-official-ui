@@ -1,0 +1,7 @@
+Capability Bus Official UI 0.1.0-alpha.1 U1
+
+No project redistribution license has been selected by the owner. The project is
+UNLICENSED and this development package is not authorized for redistribution.
+
+Third-party bundled-code licenses are recorded alongside this file during the
+reproducible package build.

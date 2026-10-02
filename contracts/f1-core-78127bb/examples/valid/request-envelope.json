@@ -1,0 +1,11 @@
+{
+  "request_id": "req_11111111111111111111111111111111",
+  "trace_id": "trace_22222222222222222222222222222222",
+  "capability": "example.echo",
+  "caller": {"subject_id": "owner:local"},
+  "grant": {"grant_id": "grant_33333333333333333333333333333333"},
+  "idempotency_key": "example-operation-1",
+  "payload": {"message": "hello"},
+  "created_at": "2026-10-01T00:00:00Z",
+  "protocol_version": "0.1.0-alpha.1"
+}
