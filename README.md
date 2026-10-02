@@ -19,15 +19,19 @@ See [F1 provenance](docs/contracts/f1-provenance.md), [security boundary](docs/s
 
 ## Offline bootstrap and verification
 
-When the exact locked tarballs already exist in the local npm content cache:
+When every package selected by the committed lock for the current platform already exists in the local
+npm content cache:
 
 ```bash
 npm run bootstrap:offline
 ```
 
-The bootstrap helper synthesizes a temporary read-only package index from those cached tarballs,
-installs the exact dependency graph, and regenerates the standard registry-based lock without network
-access. It fails if any required version is absent. Once dependencies are present:
+The bootstrap helper treats `package-lock.json` as the only resolution authority, copies only those
+exact tarballs into an isolated temporary cache, and runs offline `npm ci`. Extra cached versions are
+ignored. A missing current-platform optional binary or integrity mismatch fails closed, and the helper
+also fails if npm changes the lock. The complete lock supports the equivalent standard command
+`npm ci --offline --ignore-scripts --no-audit --no-fund` when the same tarballs are cached. Once
+dependencies are present:
 
 ```bash
 npm run verify

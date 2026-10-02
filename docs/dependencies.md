@@ -22,14 +22,19 @@ The repository source has no owner-selected redistribution license yet and is th
 project license and completes notice review. This is intentional rather than silently assigning a
 license on the owner's behalf.
 
-Network installation is not part of U1 verification. The initial workspace was bootstrapped only from
-packages already present in the local npm content cache. Future maintainers may use `npm ci` in an
-approved dependency-fetching environment; offline verification after installation uses `npm run verify`.
+Network installation is not part of verification. The workspace is bootstrapped only from packages
+already present in the local npm content cache. `package-lock.json`, rather than the set of cache
+entries, is the resolution authority. The helper selects the exact locked packages applicable to the
+current OS/architecture, ignores extra cached versions, verifies integrity, and fails if a required
+tarball is absent. The lock includes metadata-only records for non-matching platform binaries so npm's
+clean-install consistency check is complete without requiring those tarballs on this platform.
 
-The available cache contained Lightning CSS 1.33.0 but not its matching Darwin ARM64 optional binary
-(only the 1.32.0 binary was present). U1 therefore sets Vite `build.cssMinify: false`; CSS is still
-processed and bundled, but not compressed. This avoids mixing native package versions or fetching a
-binary. It can be revisited only through a separately reviewed dependency-lock update.
+Darwin ARM64 verification deterministically requires both
+`@rolldown/binding-darwin-arm64@1.2.1` and `lightningcss-darwin-arm64@1.33.0`; their absence is an
+explicit bootstrap failure rather than a cache-dependent alternate graph. The verified installed tree
+contains 20 packages. Vite `build.cssMinify: false` remains an explicit build-baseline choice; CSS is
+processed and bundled but not compressed. Changing that behavior still requires a separately reviewed
+build and dependency decision.
 
 No online maintenance or vulnerability-freshness claim was made in U1 because network access was
 forbidden. The evidence covers exact cached versions, declared licenses, target architecture presence,

@@ -6,6 +6,7 @@
 - Added deterministic loading, empty, Core error, offline, protocol-incompatible, and permission-denied mock states.
 - Added a typed U2 read model that consumes only the seven frozen F1 public capabilities.
 - Kept lifecycle controls, capability invocation, Grant/configuration mutations, real Core access, and HTTP serving out of scope.
+- Made offline bootstrap lock-driven and fail-closed for missing current-platform optional binaries.
 
 ## 0.1.0-alpha.1 (U1 development)
 
