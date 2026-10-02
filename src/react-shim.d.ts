@@ -1,5 +1,7 @@
 declare module "react" {
   export const StrictMode: (props: { children?: unknown }) => unknown;
+  export function useEffect(effect: () => void | (() => void), dependencies?: readonly unknown[]): void;
+  export function useState<T>(initial: T | (() => T)): [T, (value: T | ((current: T) => T)) => void];
 }
 
 declare module "react-dom/client" {

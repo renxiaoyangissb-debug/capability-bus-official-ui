@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased (U2)
+
+- Added read-only Dashboard, Plugins, Capabilities, Runtime, and Audit views.
+- Added deterministic loading, empty, Core error, offline, protocol-incompatible, and permission-denied mock states.
+- Added a typed U2 read model that consumes only the seven frozen F1 public capabilities.
+- Kept lifecycle controls, capability invocation, Grant/configuration mutations, real Core access, and HTTP serving out of scope.
+
 ## 0.1.0-alpha.1 (U1 development)
 
 - Added independent project governance and pinned TypeScript/React/Vite skeleton.

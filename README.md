@@ -1,8 +1,8 @@
 # Capability Bus Official UI
 
 `capability-bus-official-ui` is the independent `ui.official.web` interface plugin. This repository is
-currently at **U1**: reproducible engineering skeleton, frozen F1 protocol consumer, deterministic
-fake transport, and an HTTP-inert plugin package shell.
+currently at **U2**: the U1 protocol/package boundary plus read-only Dashboard, Plugins, Capabilities,
+Runtime, and Audit views driven exclusively by the deterministic frozen-F1 fake transport.
 
 It is not a Core module. It does not import Core Python packages, read Core SQLite, keep a second
 registry/Grant/configuration database, connect to a real Core, or expose a Web port.
@@ -42,8 +42,13 @@ network, credential, database, or Core checkout.
 The built plugin package appears at `build/plugin/ui.official.web/` and includes static assets, a
 dependency license inventory, and SHA-256 checksums. Production target machines do not run `npm install`.
 
-## Scope stop
+## U2 read surface
 
-U1 intentionally has no Dashboard, Plugins, Capabilities, Runtime, Audit, Grant, or Configuration
-product pages and no management writes. Those belong to U2/U3 after their gates. Real installation,
-enable/start/stop behavior and HTTP session security are later integration work.
+The UI consumes only `system.status.get`, plugin list/inspect, capability list/describe, Grant list,
+and audit list. Its mock-state control exercises loading, empty, Core error, offline, incompatible,
+and permission-denied rendering without changing Core state. Runtime is deliberately a projection of
+public status and plugin lifecycle fields; U2 does not invent process-control, log, or telemetry APIs.
+
+U2 has no management writes, capability invocation, Grant/configuration editing, lifecycle controls,
+real Core connection, or Web listener. Those remain behind U3, F2, and later integration gates. See
+[U2 completion](docs/u2-completion.md) for the exact boundary.
