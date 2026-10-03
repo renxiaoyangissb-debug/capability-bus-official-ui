@@ -1,0 +1,1 @@
+{"protocol_version":"0.1.0-alpha.3","request_id":"mreq_00000000000000000000000000000001","trace_id":"trace_00000000000000000000000000000001","ok":true,"authorization":{"decision":"allow","reason_code":"ALLOW"},"audit_id":1,"data":{"version":"0.1.0-alpha.3"},"error":null}

@@ -1,8 +1,8 @@
 # Capability Bus Official UI
 
 `capability-bus-official-ui` is the independent `ui.official.web` interface plugin. This repository is
-currently at **U2**: the U1 protocol/package boundary plus read-only Dashboard, Plugins, Capabilities,
-Runtime, and Audit views driven exclusively by the deterministic frozen-F1 fake transport.
+currently at **U3**: the U2 views plus catalog-driven controlled management writes against the
+frozen alpha.3 management fake. No real Core connection or Web listener is present.
 
 It is not a Core module. It does not import Core Python packages, read Core SQLite, keep a second
 registry/Grant/configuration database, connect to a real Core, or expose a Web port.
@@ -53,6 +53,7 @@ and audit list. Its mock-state control exercises loading, empty, Core error, off
 and permission-denied rendering without changing Core state. Runtime is deliberately a projection of
 public status and plugin lifecycle fields; U2 does not invent process-control, log, or telemetry APIs.
 
-U2 has no management writes, capability invocation, Grant/configuration editing, lifecycle controls,
-real Core connection, or Web listener. Those remain behind U3, F2, and later integration gates. See
-[U2 completion](docs/u2-completion.md) for the exact boundary.
+U3 exposes only operations declared by the frozen management catalog. Required idempotency keys,
+expected versions and explicit confirmation are enforced before transport; SecretRef values may cross
+the boundary but secret values may not. Real Core connection and Web serving remain later integration
+work. See [U3 completion](docs/u3-completion.md) for the exact boundary.

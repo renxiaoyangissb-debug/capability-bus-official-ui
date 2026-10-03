@@ -3,12 +3,14 @@ import { useEffect, useState } from "react";
 import { EnvelopeClient } from "../client/envelope-client.js";
 import { FakeCoreTransport, type FakeCoreScenario } from "../client/fake-core.js";
 import { PROTOCOL_VERSION, type JsonObject } from "../contracts/types.js";
+import type { ManagementScenario } from "../management/fake.js";
+import { ManagementConsole } from "./ManagementConsole.js";
 import {
   PAGE_COPY, arrayStrings, booleanField, compactId, formatTimestamp, loadManagementSnapshot,
   numberField, stringField, type ManagementSnapshot, type PageId, type SurfaceState
 } from "./model.js";
 
-type DemoScenario = FakeCoreScenario | "loading";
+type DemoScenario = FakeCoreScenario | ManagementScenario | "loading";
 
 const pages: Array<{ id: PageId; label: string; glyph: string }> = [
   { id: "dashboard", label: "Dashboard", glyph: "⌁" },
@@ -23,6 +25,7 @@ const scenarios: Array<{ value: DemoScenario; label: string }> = [
   { value: "empty", label: "Empty" }, { value: "error", label: "Core error" },
   { value: "offline", label: "Core offline" }, { value: "incompatible", label: "Incompatible" },
   { value: "forbidden", label: "Permission denied" }
+  ,{ value: "version_conflict", label: "Version conflict" }, { value: "idempotency_conflict", label: "Idempotency conflict" }
 ];
 
 export function App() {
@@ -35,7 +38,8 @@ export function App() {
     let active = true;
     setSurface({ state: "loading" });
     if (scenario === "loading") return () => { active = false; };
-    const client = new EnvelopeClient(new FakeCoreTransport(scenario), { subjectId: "ui.official.web:viewer" });
+    const readScenario: FakeCoreScenario = scenario === "version_conflict" || scenario === "idempotency_conflict" ? "ready" : scenario;
+    const client = new EnvelopeClient(new FakeCoreTransport(readScenario), { subjectId: "ui.official.web:viewer" });
     void loadManagementSnapshot(client).then((next) => { if (active) setSurface(next); });
     return () => { active = false; };
   }, [scenario, reloadKey]);
@@ -82,20 +86,20 @@ export function App() {
         <div className="content-wrap" aria-live="polite" aria-busy={surface.state === "loading"}>
           {surface.state === "loading" ? <LoadingState /> : null}
           {surface.state !== "loading" && surface.state !== "ready" ? <FailureState state={surface} onRetry={() => setReloadKey((value) => value + 1)} /> : null}
-          {surface.state === "ready" ? <ReadyPage page={page} snapshot={surface.snapshot} /> : null}
+          {surface.state === "ready" ? <ReadyPage page={page} snapshot={surface.snapshot} scenario={scenario === "loading" || scenario === "empty" ? "ready" : scenario} /> : null}
         </div>
       </main>
     </div>
   );
 }
 
-function ReadyPage({ page, snapshot }: { page: PageId; snapshot: ManagementSnapshot }) {
+function ReadyPage({ page, snapshot, scenario }: { page: PageId; snapshot: ManagementSnapshot; scenario: ManagementScenario }) {
   switch (page) {
     case "dashboard": return <Dashboard snapshot={snapshot} />;
-    case "plugins": return <Plugins snapshot={snapshot} />;
-    case "capabilities": return <Capabilities snapshot={snapshot} />;
-    case "runtime": return <Runtime snapshot={snapshot} />;
-    case "audit": return <Audit snapshot={snapshot} />;
+    case "plugins": return <Plugins snapshot={snapshot} scenario={scenario} />;
+    case "capabilities": return <Capabilities snapshot={snapshot} scenario={scenario} />;
+    case "runtime": return <Runtime snapshot={snapshot} scenario={scenario} />;
+    case "audit": return <Audit snapshot={snapshot} scenario={scenario} />;
   }
 }
 
@@ -132,7 +136,7 @@ function Dashboard({ snapshot }: { snapshot: ManagementSnapshot }) {
   </div>;
 }
 
-function Plugins({ snapshot }: { snapshot: ManagementSnapshot }) {
+function Plugins({ snapshot, scenario }: { snapshot: ManagementSnapshot; scenario: ManagementScenario }) {
   if (snapshot.plugins.length === 0) return <EmptyState kind="plugins" />;
   return <div className="page-stack">
     <SummaryLine count={snapshot.plugins.length} noun="registered provider" copy="Lifecycle and trust are separate signals. Trusted never means unrestricted." />
@@ -146,11 +150,11 @@ function Plugins({ snapshot }: { snapshot: ManagementSnapshot }) {
         </tr>)}</tbody></table></div>
     </section>
     {snapshot.pluginDetail ? <DetailPanel title="Frozen inspect result" value={snapshot.pluginDetail} /> : null}
-    <TraceStrip traceId={snapshot.traces.plugins} label="Plugin registry read" />
+    <ManagementConsole surface="plugins" scenario={scenario} /><TraceStrip traceId={snapshot.traces.plugins} label="Plugin registry read" />
   </div>;
 }
 
-function Capabilities({ snapshot }: { snapshot: ManagementSnapshot }) {
+function Capabilities({ snapshot, scenario }: { snapshot: ManagementSnapshot; scenario: ManagementScenario }) {
   if (snapshot.capabilities.length === 0) return <EmptyState kind="capabilities" />;
   return <div className="page-stack">
     <SummaryLine count={snapshot.capabilities.length} noun="published route" copy="Operation semantics come from descriptors, never from guessed capability names." />
@@ -164,11 +168,11 @@ function Capabilities({ snapshot }: { snapshot: ManagementSnapshot }) {
       </article>;
     })}</div>
     {snapshot.capabilityDetail ? <DetailPanel title="Frozen describe result" value={snapshot.capabilityDetail} /> : null}
-    <TraceStrip traceId={snapshot.traces.capabilities} label="Capability catalog read" />
+    <ManagementConsole surface="capabilities" scenario={scenario} /><TraceStrip traceId={snapshot.traces.capabilities} label="Capability catalog read" />
   </div>;
 }
 
-function Runtime({ snapshot }: { snapshot: ManagementSnapshot }) {
+function Runtime({ snapshot, scenario }: { snapshot: ManagementSnapshot; scenario: ManagementScenario }) {
   if (snapshot.plugins.length === 0) return <EmptyState kind="runtime" />;
   return <div className="page-stack">
     <section className="runtime-banner"><span className="runtime-orbit" aria-hidden="true"><i /></span>
@@ -181,11 +185,11 @@ function Runtime({ snapshot }: { snapshot: ManagementSnapshot }) {
         <p>PID, resource telemetry, logs, and controls are not present in frozen F1.</p></article>)}</div>
     </section>
     <section className="gate-note"><span aria-hidden="true">⌁</span><div><strong>Runtime control is intentionally unavailable</strong><p>Start, stop, restart, logs, and task controls require later frozen contracts. This page never synthesizes them.</p></div></section>
-    <TraceStrip traceId={snapshot.traces.status} label="Runtime source read" />
+    <ManagementConsole surface="runtime" scenario={scenario} /><TraceStrip traceId={snapshot.traces.status} label="Runtime source read" />
   </div>;
 }
 
-function Audit({ snapshot }: { snapshot: ManagementSnapshot }) {
+function Audit({ snapshot, scenario }: { snapshot: ManagementSnapshot; scenario: ManagementScenario }) {
   if (snapshot.auditItems.length === 0) return <EmptyState kind="audit" />;
   return <div className="page-stack">
     <SummaryLine count={snapshot.auditItems.length} noun="metadata record" copy="Payload values, prompts, file contents, and secret material are never part of this view." />
@@ -195,7 +199,7 @@ function Audit({ snapshot }: { snapshot: ManagementSnapshot }) {
         <div className="audit-main"><div><strong>{stringField(item, "capability")}</strong><StatusPill value={decision} /></div><p>{stringField(item, "subject_id")} · {stringField(item, "reason_code")}</p>
           <div className="audit-refs"><code title={stringField(item, "trace_id")}>{compactId(stringField(item, "trace_id"))}</code><span>{arrayStrings(item, "payload_keys").length} payload key(s)</span></div></div>
         <time>{formatTimestamp(stringField(item, "created_at"))}</time></article>; })}</div>
-    </section><TraceStrip traceId={snapshot.traces.audit} label="Audit page read" />
+    </section><ManagementConsole surface="audit" scenario={scenario} /><TraceStrip traceId={snapshot.traces.audit} label="Audit page read" />
   </div>;
 }
 

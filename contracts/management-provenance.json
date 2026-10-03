@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "authority": "capability-bus-core",
+  "core_commit": "272f6325506c4ce7c4de5c100fb3f03a28701318",
+  "protocol_version": "0.1.0-alpha.3",
+  "source_path": "contracts/management-v0.1",
+  "snapshot_path": "contracts/management-v0.1",
+  "files": {
+    "README.md": "ddcdb8fcca6b55c78df3a3f752b9449ac7c8cc843b52bae94edc0f4adb1dc81c",
+    "examples/idempotency-conflict.response.json": "8e034a73432c8887c7349154c8a80efe1bb610c44c2c826977d83f0304fa198e",
+    "examples/permission-denied.response.json": "6a8edc8b43c151079d0b9e7a9e3ffed7e0751f47354f9545065423d19697ae67",
+    "examples/read-version.request.json": "b0bfc26c5ceb78a0bd2805af41206ddf0b7a6720cccebbc84c9bbf84fb67bfbe",
+    "examples/read-version.response.json": "69036b8f20c503eb85ad10e970afc761cb6cb8869e7f8e4d87488fae4aa7b25f",
+    "examples/register-secret.request.json": "d4e1bde9a54cdee1d2f8578f6ab2a2c2b2fde19509c3f4c4c17ec08441f09ab3",
+    "examples/register-secret.response.json": "5c035020dea3b3440d4e06452a671bde2479bdcd920e75e10bfbe98f1a0d9df9",
+    "examples/revoke-secret-confirmed.request.json": "1055904a85e7e1b3d8f0aeb3cb1259ea848c5d5200bf33a544e3e1ed3d2f14e9",
+    "examples/version-conflict.response.json": "0248b80853b5e9b23a46e9aca963cfe925cda1d1ac3228000a0006fe53c4d613",
+    "operations.json": "26e5b47c87518d3f681fcca6f66f3ba9c907dff884597ce158213f0b8b4f3027",
+    "request.schema.json": "5e8313bc12887535a9c4f3b79eb1dab55c729083128c26bfcb65cb4f4aa3e49e",
+    "response.schema.json": "21fc63470645239003f22365161e660b782c0ea6bff7a3501f81b578a6a4b4f6"
+  }
+}

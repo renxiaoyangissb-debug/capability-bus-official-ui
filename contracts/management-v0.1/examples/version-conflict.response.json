@@ -1,0 +1,1 @@
+{"protocol_version":"0.1.0-alpha.3","request_id":"mreq_00000000000000000000000000000004","trace_id":"trace_00000000000000000000000000000004","ok":false,"authorization":{"decision":"error","reason_code":"CONFIG_VERSION_CONFLICT"},"audit_id":4,"data":null,"error":{"code":"CONFIG_VERSION_CONFLICT","message":"Configuration changed since the supplied version.","retryable":false}}

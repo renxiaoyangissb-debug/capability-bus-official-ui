@@ -22,6 +22,17 @@ for (const [file, identity] of Object.entries(provenance.reference_files)) {
 }
 console.log(`contracts: ${actualFiles.length} files and ${Object.keys(provenance.reference_files).length} reference identities match Core ${provenance.core_commit}`);
 
+const management = JSON.parse(readFileSync(new URL("contracts/management-provenance.json", root), "utf8"));
+const managementSnapshot = new URL(`${management.snapshot_path}/`, root);
+const managementFiles = walk(managementSnapshot).sort();
+if (JSON.stringify(managementFiles) !== JSON.stringify(Object.keys(management.files).sort())) throw new Error("Management contract inventory mismatch");
+for (const file of managementFiles) {
+  const digest = createHash("sha256").update(readFileSync(new URL(file, managementSnapshot))).digest("hex");
+  if (digest !== management.files[file]) throw new Error(`Management contract hash mismatch: ${file}`);
+}
+if (management.core_commit !== "272f6325506c4ce7c4de5c100fb3f03a28701318" || management.protocol_version !== "0.1.0-alpha.3") throw new Error("Unexpected management contract baseline");
+console.log(`management contracts: ${managementFiles.length} files match Core ${management.core_commit}`);
+
 function walk(directoryUrl) {
   const basePath = directoryUrl.pathname;
   const result = [];

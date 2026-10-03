@@ -1,0 +1,2107 @@
+{
+  "operations": {
+    "system.audit.inspect": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "audit_id": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "audit_id"
+        ],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "read",
+      "required_scope": "system.audit.inspect",
+      "requires_confirmation": false,
+      "requires_expected_version": false,
+      "requires_idempotency": false,
+      "success_data_schema": {
+        "properties": {
+          "audit_id": {},
+          "request_id": {},
+          "trace_id": {}
+        },
+        "required": [
+          "audit_id",
+          "request_id",
+          "trace_id"
+        ],
+        "type": "object"
+      }
+    },
+    "system.audit.list": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "cursor": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "limit": {
+            "type": "integer"
+          }
+        },
+        "required": [],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "read",
+      "required_scope": "system.audit.list",
+      "requires_confirmation": false,
+      "requires_expected_version": false,
+      "requires_idempotency": false,
+      "success_data_schema": {
+        "properties": {
+          "items": {},
+          "next_cursor": {}
+        },
+        "required": [
+          "items",
+          "next_cursor"
+        ],
+        "type": "object"
+      }
+    },
+    "system.audit.retention.enforce": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "keep_last": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "keep_last"
+        ],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "write",
+      "required_scope": "system.audit.retention.enforce",
+      "requires_confirmation": true,
+      "requires_expected_version": false,
+      "requires_idempotency": true,
+      "success_data_schema": {
+        "properties": {
+          "removed": {}
+        },
+        "required": [
+          "removed"
+        ],
+        "type": "object"
+      }
+    },
+    "system.capabilities.call": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "capability": {
+            "type": "string"
+          },
+          "grant_id": {
+            "type": "string"
+          },
+          "invocation_request_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "operation_key": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "payload": {
+            "type": "object"
+          },
+          "subject_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "capability",
+          "payload",
+          "subject_id",
+          "grant_id"
+        ],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "write",
+      "required_scope": "system.capabilities.call",
+      "requires_confirmation": false,
+      "requires_expected_version": false,
+      "requires_idempotency": true,
+      "success_data_schema": {
+        "properties": {
+          "ok": {},
+          "protocol_version": {},
+          "request_id": {},
+          "trace_id": {}
+        },
+        "required": [
+          "protocol_version",
+          "request_id",
+          "trace_id",
+          "ok"
+        ],
+        "type": "object"
+      }
+    },
+    "system.capabilities.describe": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "capability": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "capability"
+        ],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "read",
+      "required_scope": "system.capabilities.describe",
+      "requires_confirmation": false,
+      "requires_expected_version": false,
+      "requires_idempotency": false,
+      "success_data_schema": {
+        "properties": {
+          "capability": {},
+          "descriptor": {},
+          "operation": {},
+          "owner_system_id": {},
+          "plugin_id": {}
+        },
+        "required": [
+          "capability",
+          "owner_system_id",
+          "operation",
+          "descriptor",
+          "plugin_id"
+        ],
+        "type": "object"
+      }
+    },
+    "system.capabilities.list": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {},
+        "required": [],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "read",
+      "required_scope": "system.capabilities.list",
+      "requires_confirmation": false,
+      "requires_expected_version": false,
+      "requires_idempotency": false,
+      "success_data_schema": {
+        "properties": {
+          "items": {}
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      }
+    },
+    "system.config.get": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "plugin_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "plugin_id"
+        ],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "read",
+      "required_scope": "system.config.get",
+      "requires_confirmation": false,
+      "requires_expected_version": false,
+      "requires_idempotency": false,
+      "success_data_schema": {
+        "properties": {
+          "document": {},
+          "plugin_system_id": {},
+          "schema_version": {},
+          "state": {},
+          "version": {}
+        },
+        "required": [
+          "plugin_system_id",
+          "version",
+          "schema_version",
+          "document",
+          "state"
+        ],
+        "type": "object"
+      }
+    },
+    "system.config.history": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "plugin_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "plugin_id"
+        ],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "read",
+      "required_scope": "system.config.history",
+      "requires_confirmation": false,
+      "requires_expected_version": false,
+      "requires_idempotency": false,
+      "success_data_schema": {
+        "properties": {
+          "items": {}
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      }
+    },
+    "system.config.rollback": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "plugin_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "target_version": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "plugin_id",
+          "target_version"
+        ],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "write",
+      "required_scope": "system.config.rollback",
+      "requires_confirmation": true,
+      "requires_expected_version": true,
+      "requires_idempotency": true,
+      "success_data_schema": {
+        "properties": {
+          "document": {},
+          "plugin_system_id": {},
+          "schema_version": {},
+          "state": {},
+          "version": {}
+        },
+        "required": [
+          "plugin_system_id",
+          "version",
+          "schema_version",
+          "document",
+          "state"
+        ],
+        "type": "object"
+      }
+    },
+    "system.config.schema": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "plugin_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "plugin_id"
+        ],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "read",
+      "required_scope": "system.config.schema",
+      "requires_confirmation": false,
+      "requires_expected_version": false,
+      "requires_idempotency": false,
+      "success_data_schema": {
+        "properties": {
+          "plugin_id": {},
+          "schema": {},
+          "schema_version": {}
+        },
+        "required": [
+          "plugin_id",
+          "schema_version",
+          "schema"
+        ],
+        "type": "object"
+      }
+    },
+    "system.config.set": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "document": {
+            "type": "object"
+          },
+          "plugin_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "plugin_id",
+          "document"
+        ],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "write",
+      "required_scope": "system.config.set",
+      "requires_confirmation": false,
+      "requires_expected_version": true,
+      "requires_idempotency": true,
+      "success_data_schema": {
+        "properties": {
+          "document": {},
+          "plugin_system_id": {},
+          "schema_version": {},
+          "state": {},
+          "version": {}
+        },
+        "required": [
+          "plugin_system_id",
+          "version",
+          "schema_version",
+          "document",
+          "state"
+        ],
+        "type": "object"
+      }
+    },
+    "system.grants.create": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "capability": {
+            "type": "string"
+          },
+          "plugin_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "secrets": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "subject_id": {
+            "type": "string"
+          },
+          "ttl_seconds": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "workspaces": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "subject_id",
+          "plugin_id",
+          "capability"
+        ],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "write",
+      "required_scope": "system.grants.create",
+      "requires_confirmation": false,
+      "requires_expected_version": false,
+      "requires_idempotency": true,
+      "success_data_schema": {
+        "properties": {
+          "capability": {},
+          "grant_id": {},
+          "plugin_system_id": {},
+          "status": {},
+          "subject_id": {}
+        },
+        "required": [
+          "grant_id",
+          "subject_id",
+          "plugin_system_id",
+          "capability",
+          "status"
+        ],
+        "type": "object"
+      }
+    },
+    "system.grants.inspect": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "grant_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "grant_id"
+        ],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "read",
+      "required_scope": "system.grants.inspect",
+      "requires_confirmation": false,
+      "requires_expected_version": false,
+      "requires_idempotency": false,
+      "success_data_schema": {
+        "properties": {
+          "capability": {},
+          "grant_id": {},
+          "plugin_system_id": {},
+          "status": {},
+          "subject_id": {}
+        },
+        "required": [
+          "grant_id",
+          "subject_id",
+          "plugin_system_id",
+          "capability",
+          "status"
+        ],
+        "type": "object"
+      }
+    },
+    "system.grants.list": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {},
+        "required": [],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "read",
+      "required_scope": "system.grants.list",
+      "requires_confirmation": false,
+      "requires_expected_version": false,
+      "requires_idempotency": false,
+      "success_data_schema": {
+        "properties": {
+          "items": {}
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      }
+    },
+    "system.grants.revoke": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "grant_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "grant_id"
+        ],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "write",
+      "required_scope": "system.grants.revoke",
+      "requires_confirmation": false,
+      "requires_expected_version": false,
+      "requires_idempotency": true,
+      "success_data_schema": {
+        "properties": {
+          "capability": {},
+          "grant_id": {},
+          "plugin_system_id": {},
+          "status": {},
+          "subject_id": {}
+        },
+        "required": [
+          "grant_id",
+          "subject_id",
+          "plugin_system_id",
+          "capability",
+          "status"
+        ],
+        "type": "object"
+      }
+    },
+    "system.identity.credential.rotate": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {},
+        "required": [],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "write",
+      "required_scope": "system.identity.credential.rotate",
+      "requires_confirmation": true,
+      "requires_expected_version": false,
+      "requires_idempotency": true,
+      "success_data_schema": {
+        "properties": {
+          "credential_generation": {},
+          "current_credential_id": {},
+          "identity_id": {}
+        },
+        "required": [
+          "identity_id",
+          "current_credential_id",
+          "credential_generation"
+        ],
+        "type": "object"
+      }
+    },
+    "system.identity.get": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {},
+        "required": [],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "read",
+      "required_scope": "system.identity.get",
+      "requires_confirmation": false,
+      "requires_expected_version": false,
+      "requires_idempotency": false,
+      "success_data_schema": {
+        "properties": {
+          "credential_generation": {},
+          "current_credential_id": {},
+          "identity_id": {},
+          "kind": {},
+          "scopes": {},
+          "status": {}
+        },
+        "required": [
+          "identity_id",
+          "kind",
+          "status",
+          "scopes",
+          "current_credential_id",
+          "credential_generation"
+        ],
+        "type": "object"
+      }
+    },
+    "system.init": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {},
+        "required": [],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "write",
+      "required_scope": "system.init",
+      "requires_confirmation": false,
+      "requires_expected_version": false,
+      "requires_idempotency": true,
+      "success_data_schema": {
+        "properties": {
+          "database": {},
+          "root": {},
+          "status": {}
+        },
+        "required": [
+          "status",
+          "root",
+          "database"
+        ],
+        "type": "object"
+      }
+    },
+    "system.invocations.cancel": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "request_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "request_id"
+        ],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "write",
+      "required_scope": "system.invocations.cancel",
+      "requires_confirmation": false,
+      "requires_expected_version": false,
+      "requires_idempotency": true,
+      "success_data_schema": {
+        "properties": {
+          "request_id": {},
+          "state": {}
+        },
+        "required": [
+          "request_id",
+          "state"
+        ],
+        "type": "object"
+      }
+    },
+    "system.plugins.disable": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "plugin_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "plugin_id"
+        ],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "write",
+      "required_scope": "system.plugins.disable",
+      "requires_confirmation": false,
+      "requires_expected_version": false,
+      "requires_idempotency": true,
+      "success_data_schema": {
+        "properties": {
+          "active_version": {},
+          "lifecycle_state": {},
+          "plugin_id": {},
+          "system_id": {},
+          "trust_zone": {}
+        },
+        "required": [
+          "system_id",
+          "plugin_id",
+          "active_version",
+          "lifecycle_state",
+          "trust_zone"
+        ],
+        "type": "object"
+      }
+    },
+    "system.plugins.enable": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "plugin_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "plugin_id"
+        ],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "write",
+      "required_scope": "system.plugins.enable",
+      "requires_confirmation": false,
+      "requires_expected_version": false,
+      "requires_idempotency": true,
+      "success_data_schema": {
+        "properties": {
+          "active_version": {},
+          "lifecycle_state": {},
+          "plugin_id": {},
+          "system_id": {},
+          "trust_zone": {}
+        },
+        "required": [
+          "system_id",
+          "plugin_id",
+          "active_version",
+          "lifecycle_state",
+          "trust_zone"
+        ],
+        "type": "object"
+      }
+    },
+    "system.plugins.inspect": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "plugin_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "plugin_id"
+        ],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "read",
+      "required_scope": "system.plugins.inspect",
+      "requires_confirmation": false,
+      "requires_expected_version": false,
+      "requires_idempotency": false,
+      "success_data_schema": {
+        "properties": {
+          "active_version": {},
+          "lifecycle_state": {},
+          "plugin_id": {},
+          "system_id": {},
+          "trust_zone": {}
+        },
+        "required": [
+          "system_id",
+          "plugin_id",
+          "active_version",
+          "lifecycle_state",
+          "trust_zone"
+        ],
+        "type": "object"
+      }
+    },
+    "system.plugins.list": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {},
+        "required": [],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "read",
+      "required_scope": "system.plugins.list",
+      "requires_confirmation": false,
+      "requires_expected_version": false,
+      "requires_idempotency": false,
+      "success_data_schema": {
+        "properties": {
+          "items": {}
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      }
+    },
+    "system.plugins.register": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "package": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "package"
+        ],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "write",
+      "required_scope": "system.plugins.register",
+      "requires_confirmation": false,
+      "requires_expected_version": false,
+      "requires_idempotency": true,
+      "success_data_schema": {
+        "properties": {
+          "active_version": {},
+          "lifecycle_state": {},
+          "plugin_id": {},
+          "system_id": {},
+          "trust_zone": {}
+        },
+        "required": [
+          "system_id",
+          "plugin_id",
+          "active_version",
+          "lifecycle_state",
+          "trust_zone"
+        ],
+        "type": "object"
+      }
+    },
+    "system.plugins.remove": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "plugin_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "plugin_id"
+        ],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "write",
+      "required_scope": "system.plugins.remove",
+      "requires_confirmation": true,
+      "requires_expected_version": false,
+      "requires_idempotency": true,
+      "success_data_schema": {
+        "properties": {
+          "active_version": {},
+          "lifecycle_state": {},
+          "plugin_id": {},
+          "system_id": {},
+          "trust_zone": {}
+        },
+        "required": [
+          "system_id",
+          "plugin_id",
+          "active_version",
+          "lifecycle_state",
+          "trust_zone"
+        ],
+        "type": "object"
+      }
+    },
+    "system.plugins.rollback": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "plugin_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "plugin_id",
+          "version"
+        ],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "write",
+      "required_scope": "system.plugins.rollback",
+      "requires_confirmation": true,
+      "requires_expected_version": false,
+      "requires_idempotency": true,
+      "success_data_schema": {
+        "properties": {
+          "active_version": {},
+          "lifecycle_state": {},
+          "plugin_id": {},
+          "system_id": {},
+          "trust_zone": {}
+        },
+        "required": [
+          "system_id",
+          "plugin_id",
+          "active_version",
+          "lifecycle_state",
+          "trust_zone"
+        ],
+        "type": "object"
+      }
+    },
+    "system.plugins.start": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "plugin_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "plugin_id"
+        ],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "write",
+      "required_scope": "system.plugins.start",
+      "requires_confirmation": false,
+      "requires_expected_version": false,
+      "requires_idempotency": true,
+      "success_data_schema": {
+        "properties": {
+          "plugin": {},
+          "probe": {},
+          "resident": {}
+        },
+        "required": [
+          "plugin",
+          "probe",
+          "resident"
+        ],
+        "type": "object"
+      }
+    },
+    "system.plugins.status": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "plugin_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "plugin_id"
+        ],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "read",
+      "required_scope": "system.plugins.status",
+      "requires_confirmation": false,
+      "requires_expected_version": false,
+      "requires_idempotency": false,
+      "success_data_schema": {
+        "properties": {
+          "last_runtime_instance": {},
+          "plugin": {},
+          "resident": {},
+          "runtime_mode": {}
+        },
+        "required": [
+          "plugin",
+          "runtime_mode",
+          "last_runtime_instance",
+          "resident"
+        ],
+        "type": "object"
+      }
+    },
+    "system.plugins.stop": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "plugin_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "plugin_id"
+        ],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "write",
+      "required_scope": "system.plugins.stop",
+      "requires_confirmation": false,
+      "requires_expected_version": false,
+      "requires_idempotency": true,
+      "success_data_schema": {
+        "properties": {
+          "active_version": {},
+          "lifecycle_state": {},
+          "plugin_id": {},
+          "system_id": {},
+          "trust_zone": {}
+        },
+        "required": [
+          "system_id",
+          "plugin_id",
+          "active_version",
+          "lifecycle_state",
+          "trust_zone"
+        ],
+        "type": "object"
+      }
+    },
+    "system.plugins.trust.set": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "plugin_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "trust_zone": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "plugin_id",
+          "trust_zone"
+        ],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "write",
+      "required_scope": "system.plugins.trust.set",
+      "requires_confirmation": true,
+      "requires_expected_version": false,
+      "requires_idempotency": true,
+      "success_data_schema": {
+        "properties": {
+          "active_version": {},
+          "lifecycle_state": {},
+          "plugin_id": {},
+          "system_id": {},
+          "trust_zone": {}
+        },
+        "required": [
+          "system_id",
+          "plugin_id",
+          "active_version",
+          "lifecycle_state",
+          "trust_zone"
+        ],
+        "type": "object"
+      }
+    },
+    "system.plugins.validate": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "package": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "package"
+        ],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "read",
+      "required_scope": "system.plugins.validate",
+      "requires_confirmation": false,
+      "requires_expected_version": false,
+      "requires_idempotency": false,
+      "success_data_schema": {
+        "properties": {
+          "manifest": {},
+          "package_digest": {}
+        },
+        "required": [
+          "manifest",
+          "package_digest"
+        ],
+        "type": "object"
+      }
+    },
+    "system.plugins.versions": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "plugin_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "plugin_id"
+        ],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "read",
+      "required_scope": "system.plugins.versions",
+      "requires_confirmation": false,
+      "requires_expected_version": false,
+      "requires_idempotency": false,
+      "success_data_schema": {
+        "properties": {
+          "items": {}
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      }
+    },
+    "system.reconciliation.inspect": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "logical_operation_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "logical_operation_id"
+        ],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "read",
+      "required_scope": "system.reconciliation.inspect",
+      "requires_confirmation": false,
+      "requires_expected_version": false,
+      "requires_idempotency": false,
+      "success_data_schema": {
+        "properties": {
+          "logical_operation_id": {}
+        },
+        "required": [
+          "logical_operation_id"
+        ],
+        "type": "object"
+      }
+    },
+    "system.reconciliation.list": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {},
+        "required": [],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "read",
+      "required_scope": "system.reconciliation.list",
+      "requires_confirmation": false,
+      "requires_expected_version": false,
+      "requires_idempotency": false,
+      "success_data_schema": {
+        "properties": {
+          "items": {}
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      }
+    },
+    "system.reconciliation.resolve": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "logical_operation_id": {
+            "type": "string"
+          },
+          "outcome": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "logical_operation_id",
+          "outcome"
+        ],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "write",
+      "required_scope": "system.reconciliation.resolve",
+      "requires_confirmation": false,
+      "requires_expected_version": false,
+      "requires_idempotency": true,
+      "success_data_schema": {
+        "properties": {
+          "logical_operation_id": {}
+        },
+        "required": [
+          "logical_operation_id"
+        ],
+        "type": "object"
+      }
+    },
+    "system.resources.cache.cleanup": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "plugin_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "plugin_id"
+        ],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "write",
+      "required_scope": "system.resources.cache.cleanup",
+      "requires_confirmation": false,
+      "requires_expected_version": false,
+      "requires_idempotency": true,
+      "success_data_schema": {
+        "properties": {
+          "plugin_system_id": {},
+          "removed_bytes": {}
+        },
+        "required": [
+          "plugin_system_id",
+          "removed_bytes"
+        ],
+        "type": "object"
+      }
+    },
+    "system.resources.status": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "plugin_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "read",
+      "required_scope": "system.resources.status",
+      "requires_confirmation": false,
+      "requires_expected_version": false,
+      "requires_idempotency": false,
+      "success_data_schema": {
+        "properties": {
+          "items": {}
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      }
+    },
+    "system.secrets.list": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {},
+        "required": [],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "read",
+      "required_scope": "system.secrets.list",
+      "requires_confirmation": false,
+      "requires_expected_version": false,
+      "requires_idempotency": false,
+      "success_data_schema": {
+        "properties": {
+          "items": {}
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      }
+    },
+    "system.secrets.register": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "plugin_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "secret_ref": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "secret_ref"
+        ],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "write",
+      "required_scope": "system.secrets.register",
+      "requires_confirmation": false,
+      "requires_expected_version": false,
+      "requires_idempotency": true,
+      "success_data_schema": {
+        "properties": {
+          "secret_ref": {},
+          "status": {}
+        },
+        "required": [
+          "secret_ref",
+          "status"
+        ],
+        "type": "object"
+      }
+    },
+    "system.secrets.revoke": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {
+          "secret_ref": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "secret_ref"
+        ],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "write",
+      "required_scope": "system.secrets.revoke",
+      "requires_confirmation": true,
+      "requires_expected_version": false,
+      "requires_idempotency": true,
+      "success_data_schema": {
+        "properties": {
+          "secret_ref": {},
+          "status": {}
+        },
+        "required": [
+          "secret_ref",
+          "status"
+        ],
+        "type": "object"
+      }
+    },
+    "system.status.get": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {},
+        "required": [],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "read",
+      "required_scope": "system.status.get",
+      "requires_confirmation": false,
+      "requires_expected_version": false,
+      "requires_idempotency": false,
+      "success_data_schema": {
+        "properties": {
+          "database": {},
+          "plugins": {},
+          "status": {}
+        },
+        "required": [
+          "status",
+          "database",
+          "plugins"
+        ],
+        "type": "object"
+      }
+    },
+    "system.version.get": {
+      "arguments_schema": {
+        "additionalProperties": false,
+        "properties": {},
+        "required": [],
+        "type": "object"
+      },
+      "error_codes": [
+        "CONFIG_VERSION_CONFLICT",
+        "CONFIRMATION_REQUIRED",
+        "CREDENTIAL_EXPIRED",
+        "CREDENTIAL_INVALID",
+        "CREDENTIAL_REPLAY_DENIED",
+        "EXPECTED_VERSION_REQUIRED",
+        "IDEMPOTENCY_FINGERPRINT_CONFLICT",
+        "IDEMPOTENCY_IN_PROGRESS",
+        "IDEMPOTENCY_KEY_REQUIRED",
+        "INTEGRITY_CHECK_FAILED",
+        "MANAGEMENT_SCOPE_DENIED",
+        "NOT_FOUND",
+        "OPERATION_FAILED",
+        "VALIDATION_FAILED"
+      ],
+      "mode": "read",
+      "required_scope": "system.version.get",
+      "requires_confirmation": false,
+      "requires_expected_version": false,
+      "requires_idempotency": false,
+      "success_data_schema": {
+        "properties": {
+          "management_protocol_version": {},
+          "protocol_version": {},
+          "version": {}
+        },
+        "required": [
+          "version",
+          "protocol_version",
+          "management_protocol_version"
+        ],
+        "type": "object"
+      }
+    }
+  },
+  "protocol_version": "0.1.0-alpha.3"
+}

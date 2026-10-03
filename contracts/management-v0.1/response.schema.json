@@ -1,0 +1,8 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","additionalProperties":false,
+  "required":["protocol_version","request_id","trace_id","ok","authorization","audit_id","data","error"],
+  "properties":{"protocol_version":{"const":"0.1.0-alpha.3"},"request_id":{"type":"string","minLength":1},"trace_id":{"type":"string","minLength":1},"ok":{"type":"boolean"},
+    "authorization":{"type":"object","additionalProperties":false,"required":["decision","reason_code"],"properties":{"decision":{"enum":["allow","deny","error"]},"reason_code":{"type":"string","minLength":1}}},
+    "audit_id":{"type":["integer","null"]},"data":{},
+    "error":{"anyOf":[{"type":"null"},{"type":"object","additionalProperties":false,"required":["code","message","retryable"],"properties":{"code":{"type":"string","minLength":1},"message":{"type":"string","minLength":1},"retryable":{"type":"boolean"}}}]}}
+}

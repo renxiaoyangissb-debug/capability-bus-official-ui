@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased (U3)
+
+- Imported the 12-file management-v0.1 snapshot from Core `272f6325506c4ce7c4de5c100fb3f03a28701318`.
+- Added a catalog-driven management client, deterministic fake, controlled write panels, explicit high-impact confirmation, optimistic concurrency, idempotency, SecretRef-only validation, and request/trace/audit correlation.
+- Expanded the plugin manifest to the exact 42-operation public catalog without adding a real Core transport or listener.
+
 ## Unreleased (U2)
 
 - Added read-only Dashboard, Plugins, Capabilities, Runtime, and Audit views.

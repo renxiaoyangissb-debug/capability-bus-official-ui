@@ -1,0 +1,1 @@
+{"protocol_version":"0.1.0-alpha.3","request_id":"mreq_00000000000000000000000000000005","trace_id":"trace_00000000000000000000000000000005","ok":false,"authorization":{"decision":"deny","reason_code":"MANAGEMENT_SCOPE_DENIED"},"audit_id":5,"data":null,"error":{"code":"MANAGEMENT_SCOPE_DENIED","message":"Identity is not authorized for this operation.","retryable":false}}

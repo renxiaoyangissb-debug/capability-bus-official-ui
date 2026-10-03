@@ -1,0 +1,11 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema","type":"object","additionalProperties":false,
+  "required":["protocol_version","request_id","trace_id","identity_id","credential_id","credential_generation","timestamp","nonce","operation","arguments","idempotency_key","expected_version","confirmation","signature"],
+  "properties":{
+    "protocol_version":{"const":"0.1.0-alpha.3"},"request_id":{"type":"string","pattern":"^mreq_[0-9a-f]{32}$"},"trace_id":{"type":"string","pattern":"^trace_[0-9a-f]{32}$"},
+    "identity_id":{"type":"string","minLength":1},"credential_id":{"type":"string","minLength":1},"credential_generation":{"type":"integer","minimum":1},"timestamp":{"type":"string","format":"date-time"},"nonce":{"type":"string","minLength":1},"operation":{"type":"string","pattern":"^system\\.[a-z0-9_.]+$"},"arguments":{"type":"object"},
+    "idempotency_key":{"type":["string","null"]},"expected_version":{"type":["integer","null"]},
+    "confirmation":{"anyOf":[{"type":"null"},{"type":"object","additionalProperties":false,"required":["confirmed","operation"],"properties":{"confirmed":{"const":true},"operation":{"type":"string","minLength":1}}}]},
+    "signature":{"type":"string","minLength":1}
+  }
+}

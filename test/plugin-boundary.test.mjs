@@ -4,13 +4,15 @@ import { readFileSync } from "node:fs";
 import { spawn } from "node:child_process";
 import { createInterface } from "node:readline";
 
-test("manifest is a process-only interface plugin over frozen read capabilities", () => {
+test("manifest is a process-only interface plugin over the frozen management catalog", () => {
   const manifest = JSON.parse(readFileSync("plugin/ui.official.web/plugin.yaml", "utf8"));
+  const catalog = JSON.parse(readFileSync("contracts/management-v0.1/operations.json", "utf8"));
   assert.equal(manifest.id, "ui.official.web");
   assert.equal(manifest.kind, "interface");
   assert.equal(manifest.runtime.type, "process");
   assert.match(manifest.runtime.command, /\.py$/);
-  assert.ok(manifest.consumes.every((capability) => /\.(?:get|list|inspect|describe)$/.test(capability)));
+  assert.deepEqual([...manifest.consumes].sort(), Object.keys(catalog.operations).sort());
+  assert.equal(Object.values(catalog.operations).filter((operation) => operation.mode === "write").length, 21);
   assert.equal(manifest.permissions.network[0], "loopback-bind:127.0.0.1");
 });
 
