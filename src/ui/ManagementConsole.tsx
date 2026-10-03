@@ -2,29 +2,26 @@ import { useEffect, useState } from "react";
 import type { JsonObject, JsonValue } from "../contracts/types.js";
 import { MANAGEMENT_OPERATIONS, operationsFor, type OperationDefinition, type ValueSchema } from "../management/catalog.js";
 import { ManagementClient, type ManagementResult } from "../management/client.js";
-import { FakeManagementTransport, type ManagementScenario } from "../management/fake.js";
 
-export function ManagementConsole({ surface, scenario }: { surface: "plugins" | "capabilities" | "runtime" | "audit"; scenario: ManagementScenario }) {
+export function ManagementConsole({ surface, client, onChanged }: { surface: "plugins" | "capabilities" | "runtime" | "audit"; client: ManagementClient; onChanged: () => void }) {
   const operations = operationsFor(surface); const [operation, setOperation] = useState(operations[0]?.[0] ?? "");
   const definition = MANAGEMENT_OPERATIONS[operation]; const [args, setArgs] = useState<JsonObject>(() => defaults(definition));
   const [confirmed, setConfirmed] = useState(false); const [expectedVersion, setExpectedVersion] = useState<number | undefined>(undefined);
   const [idempotencyKey, setIdempotencyKey] = useState(() => key()); const [result, setResult] = useState<ManagementResult | null>(null);
-  const [writeScenario, setWriteScenario] = useState<ManagementScenario>(scenario);
   useEffect(() => { const next = MANAGEMENT_OPERATIONS[operation]; setArgs(defaults(next)); setConfirmed(false); setExpectedVersion(undefined); setIdempotencyKey(key()); setResult(null); }, [operation]);
   if (!definition) return null;
   const canSubmit = (!definition.requires_confirmation || confirmed) && (!definition.requires_expected_version || expectedVersion !== undefined);
-  const submit = async () => setResult(await new ManagementClient(new FakeManagementTransport(writeScenario)).call(operation, args, { confirmed, expectedVersion, idempotencyKey }));
+  const submit = async () => { const next = await client.call(operation, args, { confirmed, expectedVersion, idempotencyKey }); setResult(next); if (next.state === "ready") onChanged(); };
   return <section className="panel management-console" aria-labelledby={`manage-${surface}`}>
-    <div className="management-head"><div><p className="section-eyebrow">Controlled writes · contract fake</p><h2 id={`manage-${surface}`}>Management operation</h2></div><span>{operations.length} catalog actions</span></div>
+    <div className="management-head"><div><p className="section-eyebrow">Controlled writes · public Core transport</p><h2 id={`manage-${surface}`}>Management operation</h2></div><span>{operations.length} catalog actions</span></div>
     <label className="management-field"><span>Operation</span><select value={operation} onChange={(event: { target: { value: string } }) => setOperation(event.target.value)}>{operations.map(([name]) => <option key={name}>{name}</option>)}</select></label>
-    <label className="management-field"><span>Frozen fake response</span><select value={writeScenario} onChange={(event: { target: { value: string } }) => setWriteScenario(event.target.value as ManagementScenario)}><option value="ready">Accepted</option><option value="forbidden">Permission denied</option><option value="version_conflict">Version conflict</option><option value="idempotency_conflict">Idempotency conflict</option><option value="offline">Core offline</option><option value="incompatible">Protocol incompatible</option><option value="error">Core error</option></select></label>
     <div className="operation-meta"><span>Scope <code>{definition.required_scope}</code></span><span>Idempotency {definition.requires_idempotency ? "required" : "not required"}</span><span>Expected version {definition.requires_expected_version ? "required" : "not required"}</span></div>
     <div className="management-fields">{Object.entries(definition.arguments_schema.properties ?? {}).map(([name, schema]) => <div key={name}><ArgumentField name={name} schema={schema} value={args[name]} onChange={(value) => setArgs((current) => ({ ...current, [name]: value }))} /></div>)}</div>
     {definition.requires_expected_version ? <label className="management-field"><span>Expected version</span><input type="number" min="0" value={expectedVersion ?? ""} onChange={(event: { target: { value: string } }) => setExpectedVersion(event.target.value === "" ? undefined : Number(event.target.value))} /></label> : null}
     {definition.requires_idempotency ? <div className="idempotency-preview"><span>Idempotency key</span><code>{idempotencyKey}</code></div> : null}
     <div className={`impact-box ${definition.requires_confirmation ? "impact-box--high" : ""}`}><strong>{definition.requires_confirmation ? "High-impact confirmation required" : "Authoritative state change"}</strong><p>Core will evaluate <code>{operation}</code> using the displayed arguments and scope. The UI cannot override its decision.</p>
       {definition.requires_confirmation ? <label><input type="checkbox" checked={confirmed} onChange={(event: { target: { checked: boolean } }) => setConfirmed(event.target.checked)} /> I explicitly confirm this exact operation and its consequences.</label> : null}</div>
-    <button className="primary-button" disabled={!canSubmit} onClick={() => void submit()}>Submit to frozen management fake</button>
+    <button className="primary-button" disabled={!canSubmit} onClick={() => void submit()}>Submit to Core</button>
     {result ? <ManagementOutcome result={result} /> : null}
   </section>;
 }
@@ -36,7 +33,7 @@ function ArgumentField({ name, schema, value, onChange }: { name: string; schema
 }
 function ManagementOutcome({ result }: { result: ManagementResult }) {
   const ok = result.state === "ready"; const transportFailure = "message" in result; const code = ok ? "ACCEPTED" : transportFailure ? result.state.toUpperCase() : result.error.code;
-  return <div className={`management-result ${ok ? "management-result--ok" : "management-result--error"}`} role="status"><strong>{code}</strong><p>{ok ? "Core fake accepted the controlled request." : transportFailure ? result.message : result.error.message}</p>
+  return <div className={`management-result ${ok ? "management-result--ok" : "management-result--error"}`} role="status"><strong>{code}</strong><p>{ok ? "Core accepted the controlled request." : transportFailure ? result.message : result.error.message}</p>
     <dl><div><dt>Request</dt><dd><code>{result.requestId}</code></dd></div><div><dt>Trace</dt><dd><code>{result.traceId}</code></dd></div><div><dt>Audit</dt><dd>{result.auditId ?? "not issued"}</dd></div></dl></div>;
 }
 function defaults(definition?: OperationDefinition): JsonObject {

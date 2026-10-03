@@ -1,16 +1,15 @@
 import { useEffect, useState } from "react";
 
-import { EnvelopeClient } from "../client/envelope-client.js";
-import { FakeCoreTransport, type FakeCoreScenario } from "../client/fake-core.js";
 import { PROTOCOL_VERSION, type JsonObject } from "../contracts/types.js";
-import type { ManagementScenario } from "../management/fake.js";
+import { BrowserManagementTransport } from "../management/browser-transport.js";
+import { ManagementClient } from "../management/client.js";
 import { ManagementConsole } from "./ManagementConsole.js";
 import {
-  PAGE_COPY, arrayStrings, booleanField, compactId, formatTimestamp, loadManagementSnapshot,
+  PAGE_COPY, arrayStrings, compactId, formatTimestamp, loadLiveManagementSnapshot,
   numberField, stringField, type ManagementSnapshot, type PageId, type SurfaceState
 } from "./model.js";
 
-type DemoScenario = FakeCoreScenario | ManagementScenario | "loading";
+const managementClient = new ManagementClient(new BrowserManagementTransport());
 
 const pages: Array<{ id: PageId; label: string; glyph: string }> = [
   { id: "dashboard", label: "Dashboard", glyph: "⌁" },
@@ -20,29 +19,17 @@ const pages: Array<{ id: PageId; label: string; glyph: string }> = [
   { id: "audit", label: "Audit", glyph: "≋" }
 ];
 
-const scenarios: Array<{ value: DemoScenario; label: string }> = [
-  { value: "ready", label: "Ready" }, { value: "loading", label: "Loading" },
-  { value: "empty", label: "Empty" }, { value: "error", label: "Core error" },
-  { value: "offline", label: "Core offline" }, { value: "incompatible", label: "Incompatible" },
-  { value: "forbidden", label: "Permission denied" }
-  ,{ value: "version_conflict", label: "Version conflict" }, { value: "idempotency_conflict", label: "Idempotency conflict" }
-];
-
 export function App() {
   const [page, setPage] = useState<PageId>("dashboard");
-  const [scenario, setScenario] = useState<DemoScenario>("ready");
   const [reloadKey, setReloadKey] = useState(0);
   const [surface, setSurface] = useState<SurfaceState>({ state: "loading" });
 
   useEffect(() => {
     let active = true;
     setSurface({ state: "loading" });
-    if (scenario === "loading") return () => { active = false; };
-    const readScenario: FakeCoreScenario = scenario === "version_conflict" || scenario === "idempotency_conflict" ? "ready" : scenario;
-    const client = new EnvelopeClient(new FakeCoreTransport(readScenario), { subjectId: "ui.official.web:viewer" });
-    void loadManagementSnapshot(client).then((next) => { if (active) setSurface(next); });
+    void loadLiveManagementSnapshot(managementClient).then((next) => { if (active) setSurface(next); });
     return () => { active = false; };
-  }, [scenario, reloadKey]);
+  }, [reloadKey]);
 
   const copy = PAGE_COPY[page];
   return (
@@ -63,10 +50,10 @@ export function App() {
           ))}
         </nav>
         <div className="sidebar-spacer" />
-        <div className="boundary-card"><span aria-hidden="true">⌾</span><div><strong>Read-only boundary</strong><p>F1 public capabilities only</p></div></div>
+        <div className="boundary-card"><span aria-hidden="true">⌾</span><div><strong>Core remains authoritative</strong><p>Public alpha.3 management only</p></div></div>
         <div className="connection-card">
           <span className={`connection-dot connection-dot--${surface.state}`} aria-hidden="true" />
-          <div><strong>{connectionLabel(surface.state)}</strong><small>Frozen fake Core</small></div>
+          <div><strong>{connectionLabel(surface.state)}</strong><small>Public management transport</small></div>
         </div>
       </aside>
 
@@ -74,32 +61,27 @@ export function App() {
         <header className="topbar">
           <div className="title-group"><p className="section-eyebrow">{copy.eyebrow}</p><h1>{copy.title}</h1><p>{copy.description}</p></div>
           <div className="topbar-actions">
-            <label className="scenario-control"><span>Mock state</span>
-              <select value={scenario} onChange={(event: { target: { value: string } }) => setScenario(event.target.value as DemoScenario)}>
-                {scenarios.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}
-              </select>
-            </label>
-            <button className="icon-button" aria-label="Reload frozen Core reads" onClick={() => setReloadKey((value) => value + 1)}>↻</button>
+            <button className="icon-button" aria-label="Reload Core state" onClick={() => setReloadKey((value) => value + 1)}>↻</button>
             <span className="alpha-badge">Alpha</span>
           </div>
         </header>
         <div className="content-wrap" aria-live="polite" aria-busy={surface.state === "loading"}>
           {surface.state === "loading" ? <LoadingState /> : null}
           {surface.state !== "loading" && surface.state !== "ready" ? <FailureState state={surface} onRetry={() => setReloadKey((value) => value + 1)} /> : null}
-          {surface.state === "ready" ? <ReadyPage page={page} snapshot={surface.snapshot} scenario={scenario === "loading" || scenario === "empty" ? "ready" : scenario} /> : null}
+          {surface.state === "ready" ? <ReadyPage page={page} snapshot={surface.snapshot} onChanged={() => setReloadKey((value) => value + 1)} /> : null}
         </div>
       </main>
     </div>
   );
 }
 
-function ReadyPage({ page, snapshot, scenario }: { page: PageId; snapshot: ManagementSnapshot; scenario: ManagementScenario }) {
+function ReadyPage({ page, snapshot, onChanged }: { page: PageId; snapshot: ManagementSnapshot; onChanged: () => void }) {
   switch (page) {
     case "dashboard": return <Dashboard snapshot={snapshot} />;
-    case "plugins": return <Plugins snapshot={snapshot} scenario={scenario} />;
-    case "capabilities": return <Capabilities snapshot={snapshot} scenario={scenario} />;
-    case "runtime": return <Runtime snapshot={snapshot} scenario={scenario} />;
-    case "audit": return <Audit snapshot={snapshot} scenario={scenario} />;
+    case "plugins": return <Plugins snapshot={snapshot} onChanged={onChanged} />;
+    case "capabilities": return <Capabilities snapshot={snapshot} onChanged={onChanged} />;
+    case "runtime": return <Runtime snapshot={snapshot} onChanged={onChanged} />;
+    case "audit": return <Audit snapshot={snapshot} onChanged={onChanged} />;
   }
 }
 
@@ -110,7 +92,7 @@ function Dashboard({ snapshot }: { snapshot: ManagementSnapshot }) {
     <section className="hero-card">
       <div><div className="hero-status"><span className="pulse-dot" /> Core reports {stringField(snapshot.status, "status", "unknown")}</div>
         <h2>The control plane is visible.<br /><span>Authority stays with Core.</span></h2>
-        <p>This U2 surface projects versioned public results. It holds no registry, Grant, configuration, or audit authority.</p></div>
+        <p>This surface projects live, versioned management results. It holds no registry, Grant, configuration, or audit authority.</p></div>
       <div className="core-stamp"><span>Core build</span><strong>{stringField(snapshot.status, "version")}</strong><small>Protocol {PROTOCOL_VERSION}</small></div>
     </section>
     <section className="metric-grid" aria-label="System totals">
@@ -126,17 +108,17 @@ function Dashboard({ snapshot }: { snapshot: ManagementSnapshot }) {
             <DecisionMark decision={stringField(item, "decision")} /><div><strong>{stringField(item, "capability")}</strong><span>{stringField(item, "subject_id")} · {stringField(item, "reason_code")}</span></div>
             <time>{formatTimestamp(stringField(item, "created_at"))}</time></li>)}</ol>}
       </section>
-      <section className="panel boundary-panel"><PanelHeading eyebrow="Gate posture" title="U2 limits" />
-        <ul className="check-list"><li><span>✓</span><div><strong>Frozen F1 reads</strong><small>Seven allow-listed capabilities</small></div></li>
-          <li><span>✓</span><div><strong>Mock transport</strong><small>No real Core connection</small></div></li>
-          <li><span>✓</span><div><strong>HTTP inert</strong><small>No listener started by this UI</small></div></li>
-          <li className="check-list--locked"><span>—</span><div><strong>Mutations locked</strong><small>Deferred to U3 and F2</small></div></li></ul>
+      <section className="panel boundary-panel"><PanelHeading eyebrow="Gate posture" title="U4 integration" />
+        <ul className="check-list"><li><span>✓</span><div><strong>Live Core reads</strong><small>Frozen alpha.3 operations</small></div></li>
+          <li><span>✓</span><div><strong>Scoped plugin identity</strong><small>Core rechecks every request</small></div></li>
+          <li><span>✓</span><div><strong>Loopback session</strong><small>Pairing, Origin, and CSRF protected</small></div></li>
+          <li><span>✓</span><div><strong>Controlled writes</strong><small>Confirmation and concurrency preserved</small></div></li></ul>
       </section>
     </div><TraceStrip traceId={snapshot.traces.status} label="Status read" />
   </div>;
 }
 
-function Plugins({ snapshot, scenario }: { snapshot: ManagementSnapshot; scenario: ManagementScenario }) {
+function Plugins({ snapshot, onChanged }: { snapshot: ManagementSnapshot; onChanged: () => void }) {
   if (snapshot.plugins.length === 0) return <EmptyState kind="plugins" />;
   return <div className="page-stack">
     <SummaryLine count={snapshot.plugins.length} noun="registered provider" copy="Lifecycle and trust are separate signals. Trusted never means unrestricted." />
@@ -150,11 +132,11 @@ function Plugins({ snapshot, scenario }: { snapshot: ManagementSnapshot; scenari
         </tr>)}</tbody></table></div>
     </section>
     {snapshot.pluginDetail ? <DetailPanel title="Frozen inspect result" value={snapshot.pluginDetail} /> : null}
-    <ManagementConsole surface="plugins" scenario={scenario} /><TraceStrip traceId={snapshot.traces.plugins} label="Plugin registry read" />
+    <ManagementConsole surface="plugins" client={managementClient} onChanged={onChanged} /><TraceStrip traceId={snapshot.traces.plugins} label="Plugin registry read" />
   </div>;
 }
 
-function Capabilities({ snapshot, scenario }: { snapshot: ManagementSnapshot; scenario: ManagementScenario }) {
+function Capabilities({ snapshot, onChanged }: { snapshot: ManagementSnapshot; onChanged: () => void }) {
   if (snapshot.capabilities.length === 0) return <EmptyState kind="capabilities" />;
   return <div className="page-stack">
     <SummaryLine count={snapshot.capabilities.length} noun="published route" copy="Operation semantics come from descriptors, never from guessed capability names." />
@@ -164,32 +146,32 @@ function Capabilities({ snapshot, scenario }: { snapshot: ManagementSnapshot; sc
         <div className="capability-card__top"><span className="domain-mark">{domain.slice(0, 2).toUpperCase()}</span><StatusPill value={stringField(capability, "operation")} /></div>
         <h2>{name}</h2><dl className="record-list"><div><dt>Provider</dt><dd>{stringField(capability, "plugin_id")}</dd></div>
           <div><dt>Owner</dt><dd><code title={stringField(capability, "owner_system_id")}>{compactId(stringField(capability, "owner_system_id"))}</code></dd></div></dl>
-        <div className="locked-action"><span aria-hidden="true">⌁</span> Invocation is outside U2</div>
+        <div className="locked-action"><span aria-hidden="true">⌁</span> Invocation requires a matching Core Grant</div>
       </article>;
     })}</div>
     {snapshot.capabilityDetail ? <DetailPanel title="Frozen describe result" value={snapshot.capabilityDetail} /> : null}
-    <ManagementConsole surface="capabilities" scenario={scenario} /><TraceStrip traceId={snapshot.traces.capabilities} label="Capability catalog read" />
+    <ManagementConsole surface="capabilities" client={managementClient} onChanged={onChanged} /><TraceStrip traceId={snapshot.traces.capabilities} label="Capability catalog read" />
   </div>;
 }
 
-function Runtime({ snapshot, scenario }: { snapshot: ManagementSnapshot; scenario: ManagementScenario }) {
+function Runtime({ snapshot, onChanged }: { snapshot: ManagementSnapshot; onChanged: () => void }) {
   if (snapshot.plugins.length === 0) return <EmptyState kind="runtime" />;
   return <div className="page-stack">
     <section className="runtime-banner"><span className="runtime-orbit" aria-hidden="true"><i /></span>
       <div><p>Core status</p><h2>{stringField(snapshot.status, "status", "unknown")}</h2><span>Version {stringField(snapshot.status, "version")}</span></div>
-      <StatusPill value={booleanField(snapshot.status, "fake") ? "fake transport" : "public transport"} /></section>
+      <StatusPill value="public transport" /></section>
     <section className="panel"><div className="table-toolbar"><PanelHeading eyebrow="Public lifecycle projection" title="Runtime instances" /><ReadOnlyTag /></div>
       <div className="runtime-list">{snapshot.plugins.map((plugin) => <article key={stringField(plugin, "system_id")}>
         <span className="runtime-state-line" aria-hidden="true" /><div><strong>{stringField(plugin, "plugin_id")}</strong><code>{stringField(plugin, "active_version")}</code></div>
         <div><small>Lifecycle</small><StatusPill value={stringField(plugin, "lifecycle_state")} /></div><div><small>Trust</small><StatusPill value={stringField(plugin, "trust_zone")} /></div>
-        <p>PID, resource telemetry, logs, and controls are not present in frozen F1.</p></article>)}</div>
+        <p>Lifecycle state is read from Core; controls remain subject to the current management Grant.</p></article>)}</div>
     </section>
-    <section className="gate-note"><span aria-hidden="true">⌁</span><div><strong>Runtime control is intentionally unavailable</strong><p>Start, stop, restart, logs, and task controls require later frozen contracts. This page never synthesizes them.</p></div></section>
-    <ManagementConsole surface="runtime" scenario={scenario} /><TraceStrip traceId={snapshot.traces.status} label="Runtime source read" />
+    <section className="gate-note"><span aria-hidden="true">⌁</span><div><strong>Runtime control remains explicit</strong><p>Each operation carries Core-required idempotency, confirmation, and correlation evidence.</p></div></section>
+    <ManagementConsole surface="runtime" client={managementClient} onChanged={onChanged} /><TraceStrip traceId={snapshot.traces.status} label="Runtime source read" />
   </div>;
 }
 
-function Audit({ snapshot, scenario }: { snapshot: ManagementSnapshot; scenario: ManagementScenario }) {
+function Audit({ snapshot, onChanged }: { snapshot: ManagementSnapshot; onChanged: () => void }) {
   if (snapshot.auditItems.length === 0) return <EmptyState kind="audit" />;
   return <div className="page-stack">
     <SummaryLine count={snapshot.auditItems.length} noun="metadata record" copy="Payload values, prompts, file contents, and secret material are never part of this view." />
@@ -199,7 +181,7 @@ function Audit({ snapshot, scenario }: { snapshot: ManagementSnapshot; scenario:
         <div className="audit-main"><div><strong>{stringField(item, "capability")}</strong><StatusPill value={decision} /></div><p>{stringField(item, "subject_id")} · {stringField(item, "reason_code")}</p>
           <div className="audit-refs"><code title={stringField(item, "trace_id")}>{compactId(stringField(item, "trace_id"))}</code><span>{arrayStrings(item, "payload_keys").length} payload key(s)</span></div></div>
         <time>{formatTimestamp(stringField(item, "created_at"))}</time></article>; })}</div>
-    </section><ManagementConsole surface="audit" scenario={scenario} /><TraceStrip traceId={snapshot.traces.audit} label="Audit page read" />
+    </section><ManagementConsole surface="audit" client={managementClient} onChanged={onChanged} /><TraceStrip traceId={snapshot.traces.audit} label="Audit page read" />
   </div>;
 }
 
@@ -237,7 +219,7 @@ function TraceStrip({ traceId, label }: { traceId: string; label: string }) { re
 function DetailPanel({ title, value }: { title: string; value: JsonObject }) { return <section className="panel detail-panel"><div><p className="section-eyebrow">Public detail capability</p><h2>{title}</h2><p>No local enrichment or private state.</p></div>
   <dl className="detail-grid">{Object.entries(value).map(([key, item]) => <div key={key}><dt>{key.replaceAll("_", " ")}</dt><dd>{displayValue(item)}</dd></div>)}</dl></section>; }
 function displayValue(value: unknown): string { if (value === null) return "none"; if (["string", "number", "boolean"].includes(typeof value)) return String(value); if (Array.isArray(value)) return value.map(String).join(", "); if (typeof value === "object") return JSON.stringify(value); return "—"; }
-function connectionLabel(state: SurfaceState["state"]): string { return ({ loading: "Reading Core", ready: "Fixture connected", offline: "Core offline", incompatible: "Protocol blocked", forbidden: "Grant required", error: "Core error" })[state]; }
+function connectionLabel(state: SurfaceState["state"]): string { return ({ loading: "Reading Core", ready: "Core connected", offline: "Core offline", incompatible: "Protocol blocked", forbidden: "Grant required", error: "Core error" })[state]; }
 function failureCopy(state: Exclude<SurfaceState, { state: "loading" } | { state: "ready" }>) { switch (state.state) {
   case "offline": return { symbol: "⌁", title: "Core is offline", body: state.message };
   case "incompatible": return { symbol: "≠", title: "Protocol mismatch", body: `${state.message}. The UI failed closed without rendering untrusted data.` };

@@ -1,6 +1,7 @@
 import type { EnvelopeClient } from "../client/envelope-client.js";
 import type { ClientResult } from "../client/result.js";
 import type { ErrorEnvelope, JsonObject, JsonValue } from "../contracts/types.js";
+import type { ManagementClient, ManagementResult } from "../management/client.js";
 
 export const FROZEN_READ_CAPABILITIES = [
   "system.status.get",
@@ -47,7 +48,7 @@ export const PAGE_COPY: Record<PageId, PageCopy> = {
   dashboard: {
     eyebrow: "System overview",
     title: "Dashboard",
-    description: "A read-only pulse of the frozen Core surface and its registered providers."
+    description: "A live pulse of the frozen Core management surface and its registered providers."
   },
   plugins: {
     eyebrow: "Registry",
@@ -121,6 +122,44 @@ export async function loadManagementSnapshot(client: EnvelopeClient): Promise<Su
       }
     }
   };
+}
+
+export async function loadLiveManagementSnapshot(client: ManagementClient): Promise<SurfaceState> {
+  const [status, plugins, capabilities, grants, audit] = await Promise.all([
+    client.call("system.status.get", {}), client.call("system.plugins.list", {}),
+    client.call("system.capabilities.list", {}), client.call("system.grants.list", {}),
+    client.call("system.audit.list", { limit: 50, cursor: null })
+  ]);
+  const firstFailure = [status, plugins, capabilities, grants, audit].find((result) => result.state !== "ready");
+  if (firstFailure) return managementFailure(firstFailure);
+  const statusData = managementData(status); const pluginData = managementData(plugins);
+  const capabilityData = managementData(capabilities); const grantData = managementData(grants); const auditData = managementData(audit);
+  const pluginItems = objectItems(pluginData); const capabilityItems = objectItems(capabilityData);
+  const [pluginDetail, capabilityDetail] = await Promise.all([
+    pluginItems.length ? client.call("system.plugins.inspect", { plugin_id: stringField(pluginItems[0], "plugin_id", "") }) : Promise.resolve(null),
+    capabilityItems.length ? client.call("system.capabilities.describe", { capability: stringField(capabilityItems[0], "capability", "") }) : Promise.resolve(null)
+  ]);
+  const detailFailure = [pluginDetail, capabilityDetail].find((result) => result !== null && result.state !== "ready");
+  if (detailFailure) return managementFailure(detailFailure);
+  return { state: "ready", snapshot: {
+    status: statusData, plugins: pluginItems,
+    pluginDetail: pluginDetail === null ? null : managementData(pluginDetail),
+    capabilities: capabilityItems,
+    capabilityDetail: capabilityDetail === null ? null : managementData(capabilityDetail),
+    grants: objectItems(grantData), auditItems: objectItems(auditData), nextAuditCursor: nullableInteger(auditData.next_cursor),
+    traces: { status: status.traceId, plugins: plugins.traceId, capabilities: capabilities.traceId, grants: grants.traceId, audit: audit.traceId }
+  } };
+}
+
+function managementFailure(result: Exclude<ManagementResult, { state: "ready" }>): SurfaceFailure {
+  if (result.state === "offline" || result.state === "incompatible") return { state: result.state, message: result.message, traceId: result.traceId };
+  if ("error" in result) return { state: result.state === "forbidden" ? "forbidden" : "error", error: result.error, traceId: result.traceId };
+  return { state: "error", error: { code: "INVALID_RESPONSE", message: "Management failure is malformed", retryable: false }, traceId: result.traceId };
+}
+
+function managementData(result: ManagementResult): JsonObject {
+  if (result.state !== "ready" || !isObject(result.data as JsonValue)) throw new Error("Expected management object data");
+  return result.data as JsonObject;
 }
 
 export function stringField(value: JsonObject, key: string, fallback = "—"): string {

@@ -30,7 +30,7 @@ for (const file of managementFiles) {
   const digest = createHash("sha256").update(readFileSync(new URL(file, managementSnapshot))).digest("hex");
   if (digest !== management.files[file]) throw new Error(`Management contract hash mismatch: ${file}`);
 }
-if (management.core_commit !== "272f6325506c4ce7c4de5c100fb3f03a28701318" || management.protocol_version !== "0.1.0-alpha.3") throw new Error("Unexpected management contract baseline");
+if (management.core_commit !== "322503845cb322628fe2db7a2c570fc6289d22db" || management.protocol_version !== "0.1.0-alpha.3") throw new Error("Unexpected management contract baseline");
 console.log(`management contracts: ${managementFiles.length} files match Core ${management.core_commit}`);
 
 function walk(directoryUrl) {

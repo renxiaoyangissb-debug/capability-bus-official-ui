@@ -1,11 +1,13 @@
 # Capability Bus Official UI
 
 `capability-bus-official-ui` is the independent `ui.official.web` interface plugin. This repository is
-currently at **U3**: the U2 views plus catalog-driven controlled management writes against the
-frozen alpha.3 management fake. No real Core connection or Web listener is present.
+currently at **U4**: the U2/U3 views and catalog-driven management actions now use the accepted Core
+alpha.3 resident interface-plugin bootstrap and public local management transport.
 
 It is not a Core module. It does not import Core Python packages, read Core SQLite, keep a second
-registry/Grant/configuration database, connect to a real Core, or expose a Web port.
+registry/Grant/configuration database, use the owner credential, or call a private Core endpoint. Its
+Web listener exists only while an authorized resident plugin is explicitly running and binds an
+ephemeral IPv4 loopback port.
 
 ## Frozen baseline
 
@@ -40,20 +42,21 @@ npm run package:plugin
 
 `verify` checks the 27 upstream contract hashes plus six pinned F1 reference identities, TypeScript
 types, protocol/client/security/plugin tests, the Vite static build, dependency license declarations,
-and architectural boundary policy. Tests use only fixtures and the local fake; they require no
-network, credential, database, or Core checkout.
+and architectural boundary policy. Unit tests use generated credentials and local fixtures; they
+require no external network or service. The separate `scripts/verify-real-core.py` fixture pins an
+exact local Core commit.
 
 The built plugin package appears at `build/plugin/ui.official.web/` and includes static assets, a
 dependency license inventory, and SHA-256 checksums. Production target machines do not run `npm install`.
 
-## U2 read surface
+## U4 real-Core surface
 
-The UI consumes only `system.status.get`, plugin list/inspect, capability list/describe, Grant list,
-and audit list. Its mock-state control exercises loading, empty, Core error, offline, incompatible,
-and permission-denied rendering without changing Core state. Runtime is deliberately a projection of
-public status and plugin lifecycle fields; U2 does not invent process-control, log, or telemetry APIs.
+The browser talks only to the plugin's same-origin loopback backend. The backend injects Core's scoped
+plugin identity into an unsigned browser request, signs the canonical request with its short-lived
+process credential, and sends the public management envelope over Core's supplied Unix socket. Core
+credentials never enter browser state, storage, responses, or static assets.
 
-U3 exposes only operations declared by the frozen management catalog. Required idempotency keys,
+The UI exposes only operations declared by the frozen management catalog. Required idempotency keys,
 expected versions and explicit confirmation are enforced before transport; SecretRef values may cross
-the boundary but secret values may not. Real Core connection and Web serving remain later integration
-work. See [U3 completion](docs/u3-completion.md) for the exact boundary.
+the boundary but secret values may not. See [U4 completion](docs/u4-completion.md) and
+[U4 security boundary](docs/security/u4-security-boundary.md) for the exact scope and limitations.

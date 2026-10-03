@@ -1,15 +1,15 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Capability Bus Official UI U1 configuration",
+  "title": "Capability Bus Official UI U4 configuration",
   "type": "object",
   "additionalProperties": false,
   "required": ["bind_host", "port", "session_ttl_minutes", "theme", "language", "audit_page_size"],
   "properties": {
     "bind_host": { "const": "127.0.0.1" },
-    "port": { "type": "integer", "minimum": 0, "maximum": 65535, "default": 0 },
-    "session_ttl_minutes": { "type": "integer", "minimum": 5, "maximum": 120, "default": 30 },
-    "theme": { "enum": ["system", "light", "dark"], "default": "system" },
-    "language": { "enum": ["zh-CN", "en"], "default": "zh-CN" },
-    "audit_page_size": { "type": "integer", "minimum": 1, "maximum": 200, "default": 50 }
+    "port": { "const": 0 },
+    "session_ttl_minutes": { "const": 30 },
+    "theme": { "enum": ["system", "light", "dark"] },
+    "language": { "enum": ["zh-CN", "en"] },
+    "audit_page_size": { "const": 50 }
   }
 }

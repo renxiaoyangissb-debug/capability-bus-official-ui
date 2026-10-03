@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
   "authority": "capability-bus-core",
-  "core_commit": "272f6325506c4ce7c4de5c100fb3f03a28701318",
+  "core_commit": "322503845cb322628fe2db7a2c570fc6289d22db",
   "protocol_version": "0.1.0-alpha.3",
   "source_path": "contracts/management-v0.1",
   "snapshot_path": "contracts/management-v0.1",
   "files": {
-    "README.md": "ddcdb8fcca6b55c78df3a3f752b9449ac7c8cc843b52bae94edc0f4adb1dc81c",
+    "README.md": "e4dd2d8ea5c0212c8a5b030a69fb9214d2cf2267442f3db06b563fe3c9ae5443",
     "examples/idempotency-conflict.response.json": "8e034a73432c8887c7349154c8a80efe1bb610c44c2c826977d83f0304fa198e",
     "examples/permission-denied.response.json": "6a8edc8b43c151079d0b9e7a9e3ffed7e0751f47354f9545065423d19697ae67",
     "examples/read-version.request.json": "b0bfc26c5ceb78a0bd2805af41206ddf0b7a6720cccebbc84c9bbf84fb67bfbe",

@@ -4,9 +4,9 @@ import { MANAGEMENT_OPERATIONS, MANAGEMENT_PROTOCOL_VERSION, validateArguments }
 
 export interface ManagementRequest {
   protocol_version: typeof MANAGEMENT_PROTOCOL_VERSION; request_id: string; trace_id: string;
-  identity_id: string; credential_id: string; credential_generation: number; timestamp: string; nonce: string;
+  timestamp: string; nonce: string;
   operation: string; arguments: JsonObject; idempotency_key: string | null; expected_version: number | null;
-  confirmation: { confirmed: true; operation: string } | null; signature: string;
+  confirmation: { confirmed: true; operation: string } | null;
 }
 export interface ManagementResponse {
   protocol_version: typeof MANAGEMENT_PROTOCOL_VERSION; request_id: string; trace_id: string; ok: boolean;
@@ -34,12 +34,10 @@ export class ManagementClient {
       if (definition.requires_confirmation && options.confirmed !== true) return localError("CONFIRMATION_REQUIRED", "Explicit confirmation is required", requestId, traceId);
       const request: ManagementRequest = {
         protocol_version: MANAGEMENT_PROTOCOL_VERSION, request_id: requestId, trace_id: traceId,
-        identity_id: "ui-fixture:owner", credential_id: "fixture-credential", credential_generation: 1,
         timestamp: new Date().toISOString(), nonce: `nonce_${randomHex()}`, operation, arguments: args,
         idempotency_key: definition.requires_idempotency ? options.idempotencyKey! : null,
         expected_version: definition.requires_expected_version ? options.expectedVersion! : null,
-        confirmation: definition.requires_confirmation ? { confirmed: true, operation } : null,
-        signature: "fixture-signature"
+        confirmation: definition.requires_confirmation ? { confirmed: true, operation } : null
       };
       const response = parseResponse(await this.transport.invoke(request));
       if (response.request_id !== requestId || response.trace_id !== traceId) throw new Error("Management response correlation mismatch");

@@ -2,10 +2,14 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
   "additionalProperties": false,
-  "required": ["phase", "http_listening", "production_web_security"],
+  "required": ["phase", "http_listening", "production_web_security", "url", "pairing_url", "pairing_expires_at", "management_protocol_version"],
   "properties": {
-    "phase": { "const": "U1-shell" },
-    "http_listening": { "const": false },
-    "production_web_security": { "const": false }
+    "phase": { "const": "U4-real-core" },
+    "http_listening": { "const": true },
+    "production_web_security": { "const": true },
+    "url": { "type": "string", "pattern": "^http://127\\.0\\.0\\.1:[0-9]+$" },
+    "pairing_url": { "type": ["string", "null"] },
+    "pairing_expires_at": { "type": ["string", "null"] },
+    "management_protocol_version": { "const": "0.1.0-alpha.3" }
   }
 }
