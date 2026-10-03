@@ -60,3 +60,5 @@ The UI exposes only operations declared by the frozen management catalog. Requir
 expected versions and explicit confirmation are enforced before transport; SecretRef values may cross
 the boundary but secret values may not. See [U4 completion](docs/u4-completion.md) and
 [U4 security boundary](docs/security/u4-security-boundary.md) for the exact scope and limitations.
+Install, upgrade, backup-based downgrade, disable and removal procedures are documented in the
+[Official UI lifecycle runbook](docs/runbooks/official-ui-lifecycle.md).

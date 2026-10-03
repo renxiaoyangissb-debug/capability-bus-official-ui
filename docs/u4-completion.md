@@ -1,7 +1,7 @@
 # U4 completion and boundary
 
 U4 replaces the production fake path with Core's accepted resident interface-plugin management
-bootstrap at `322503845cb322628fe2db7a2c570fc6289d22db`. The backend validates the bootstrap before
+bootstrap at `c4fe12634571154a9d64ce97f8f9922dc14317b3`. The backend validates the bootstrap before
 binding, signs the unchanged alpha.3 request semantics, and forwards the public
 `capbus-local-control-v1` management envelope. The frozen fake remains only for deterministic tests.
 
@@ -14,6 +14,9 @@ The real integration fixture covers CLI registration, a Grant bound to the stabl
 identity, enable/start, public reads and writes, idempotency replay/conflict, configuration optimistic
 concurrency, explicit confirmation, audit lookup, Grant revocation, disable/remove, listener release,
 Core independence, UI restart/reprovision, Core restart/recovery, and incompatible bootstrap rejection.
+The final T5 evidence additionally starts a resident non-UI plugin and successfully invokes it before
+UI disable, after UI disable with the same resident process, and after UI removal, while the UI listener
+and session authority remain gone.
 
 Remaining Alpha limitations are the lack of an OS sandbox, loopback HTTP without TLS, in-memory
 sessions, and fixed runtime defaults for port/session/audit-page configuration until Core publishes a

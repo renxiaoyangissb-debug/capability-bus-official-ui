@@ -15,19 +15,26 @@ import uuid
 from pathlib import Path
 
 
-CORE_COMMIT = "322503845cb322628fe2db7a2c570fc6289d22db"
+CORE_COMMIT = "c4fe12634571154a9d64ce97f8f9922dc14317b3"
 PLUGIN_ID = "ui.official.web"
 
 
 def main():
     repository = Path(__file__).resolve().parents[1]
-    core = Path(sys.argv[1] if len(sys.argv) > 1 else repository.parent / "capability-bus-core").resolve()
+    arguments = list(sys.argv[1:])
+    use_existing_package = "--use-existing-package" in arguments
+    if use_existing_package:
+        arguments.remove("--use-existing-package")
+    core = Path(arguments[0] if arguments else repository.parent / "capability-bus-core").resolve()
     if run(["git", "-C", str(core), "rev-parse", "HEAD"]).strip() != CORE_COMMIT:
         raise RuntimeError("Real integration requires the accepted Core commit")
     if run(["git", "-C", str(core), "status", "--porcelain"]).strip():
         raise RuntimeError("Real integration requires a clean Core worktree")
-    subprocess.run(["npm", "run", "package:plugin"], cwd=repository, check=True)
+    if not use_existing_package:
+        subprocess.run(["npm", "run", "package:plugin"], cwd=repository, check=True)
     package = repository / "build" / "plugin" / PLUGIN_ID
+    if not (package / "checksums.json").is_file():
+        raise RuntimeError("Verified UI plugin package is missing")
     environment = dict(os.environ)
     environment.update({"PYTHONPATH": str(core / "src"), "PYTHONDONTWRITEBYTECODE": "1"})
     with tempfile.TemporaryDirectory(prefix="capbus-ui-u4-") as directory:
@@ -41,6 +48,14 @@ def main():
             capability_grant = cli(core, root, environment, "grant", "create", "--plugin", PLUGIN_ID, "--capability", "ui.session.status")["data"]
             cli(core, root, environment, "plugin", "enable", PLUGIN_ID)
             cli(core, root, environment, "plugin", "start", PLUGIN_ID)
+
+            echo_package = core / "examples" / "example-echo"
+            cli(core, root, environment, "plugin", "register", str(echo_package))
+            echo_grant = cli(core, root, environment, "grant", "create", "--plugin", "example.echo", "--capability", "example.echo")["data"]
+            cli(core, root, environment, "plugin", "enable", "example.echo")
+            cli(core, root, environment, "plugin", "start", "example.echo")
+            echo_before = echo_call(core, root, environment, echo_grant["grant_id"], "before-ui-disable")
+            echo_pid = echo_before["process_id"]
 
             status = session_status(core, root, environment, capability_grant["grant_id"], "initial")
             browser, csrf = pair(status["pairing_url"], status["url"])
@@ -73,6 +88,8 @@ def main():
             cli(core, root, environment, "plugin", "disable", PLUGIN_ID)
             wait_unreachable(status["url"])
             require(cli(core, root, environment, "version")["ok"], "Core CLI failed after UI disable")
+            echo_disabled = echo_call(core, root, environment, echo_grant["grant_id"], "after-ui-disable")
+            require(echo_disabled["process_id"] == echo_pid, "non-UI resident process changed across UI disable")
 
             management_grant = cli(core, root, environment, "grant", "create", "--subject", identity_id, "--plugin", PLUGIN_ID, "--capability", "system.*")["data"]
             cli(core, root, environment, "plugin", "enable", PLUGIN_ID)
@@ -93,6 +110,11 @@ def main():
             wait_unreachable(recovered["url"])
             cli(core, root, environment, "plugin", "remove", PLUGIN_ID, "--confirm")
             require(cli(core, root, environment, "version")["ok"], "Core CLI failed after UI removal")
+            wait_unreachable(recovered["url"])
+            echo_removed = echo_call(core, root, environment, echo_grant["grant_id"], "after-ui-remove")
+            echo_status = cli(core, root, environment, "plugin", "status", "example.echo")["data"]
+            require(echo_status["plugin"]["lifecycle_state"] == "healthy" and echo_status["resident"]["resident"], "non-UI plugin was not healthy after UI removal")
+            require(echo_removed["echo"] == {"checkpoint": "after-ui-remove"}, "non-UI invocation failed after UI removal")
             incompatible = subprocess.run([sys.executable, str(package / "server" / "plugin.py")], cwd=package, env={
                 "CAPBUS_PROTOCOL_VERSION": "0.1.0-alpha.1", "CAPBUS_PLUGIN_ID": PLUGIN_ID,
                 "CAPBUS_MANAGEMENT_SOCKET": str(root / "run" / "core.sock"), "CAPBUS_MANAGEMENT_PROTOCOL_VERSION": "0.1.0-alpha.999",
@@ -100,7 +122,7 @@ def main():
                 "CAPBUS_MANAGEMENT_CREDENTIAL_GENERATION": "1", "CAPBUS_MANAGEMENT_HMAC_KEY": os.urandom(32).hex(),
             }, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, timeout=5)
             require(incompatible.returncode == 1 and not incompatible.stdout, "incompatible bootstrap did not fail closed")
-            print("real Core integration: install/authorize/enable, reads/writes, revoke, disable/remove, recovery, and compatibility passed")
+            print("real Core integration: UI lifecycle plus independent non-UI operation before/after disable/remove passed")
         finally:
             if daemon.poll() is None:
                 try:
@@ -133,6 +155,14 @@ def cli(core, root, environment, *arguments):
 def session_status(core, root, environment, grant_id, key):
     value = cli(core, root, environment, "capability", "call", "ui.session.status", "--grant", grant_id, "--idempotency-key", key)
     return value["data"]["data"]
+
+
+def echo_call(core, root, environment, grant_id, checkpoint):
+    value = cli(core, root, environment, "capability", "call", "example.echo", "--grant", grant_id,
+                "--idempotency-key", "u4-" + checkpoint, "--input", json.dumps({"checkpoint": checkpoint}, separators=(",", ":")))
+    data = value["data"]["data"]
+    require(data["echo"] == {"checkpoint": checkpoint}, "non-UI plugin returned an invalid result")
+    return data
 
 
 def pair(pairing_url, origin):
