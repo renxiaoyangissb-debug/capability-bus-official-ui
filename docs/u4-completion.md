@@ -1,8 +1,10 @@
 # U4 completion and boundary
 
 U4 replaces the production fake path with Core's accepted resident interface-plugin management
-bootstrap at `c4fe12634571154a9d64ce97f8f9922dc14317b3`. The backend validates the bootstrap before
-binding, signs the unchanged alpha.3 request semantics, and forwards the public
+bootstrap at `4858520224a98b6528cb6cf47e7aa2e517bb62dc`. That exact Core runtime/package is
+`0.1.0-alpha.4`; capability protocol remains `0.1.0-alpha.1` and management protocol remains
+`0.1.0-alpha.3`. The backend validates the bootstrap before binding, signs the unchanged alpha.3
+request semantics, and forwards the public
 `capbus-local-control-v1` management envelope. The frozen fake remains only for deterministic tests.
 
 The packaged plugin now provides an ephemeral loopback Web server, one-use pairing, in-memory browser

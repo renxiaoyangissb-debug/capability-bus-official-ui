@@ -15,7 +15,7 @@ import uuid
 from pathlib import Path
 
 
-CORE_COMMIT = "c4fe12634571154a9d64ce97f8f9922dc14317b3"
+CORE_COMMIT = "4858520224a98b6528cb6cf47e7aa2e517bb62dc"
 PLUGIN_ID = "ui.official.web"
 
 

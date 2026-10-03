@@ -3,8 +3,9 @@
 Date: 2026-10-03 (Asia/Shanghai)
 
 - UI baseline: `39b5904499c0ecfa0dff1d57683812c150e377e4`
-- Accepted pair: UI `28f2428130db4d39f546d34f20b440fbc72fc6d1` and Core `c4fe12634571154a9d64ce97f8f9922dc14317b3`
-- Platform acceptance/recovery: `a429c2b`, `c123ed7`; joint audit dispatch: `669dd43`
+- Exact refresh pair: UI `c3a641ffc22a21905753d68c2c87621c4354faee` and Core `4858520224a98b6528cb6cf47e7aa2e517bb62dc`
+- Core runtime/package: `0.1.0-alpha.4`; UI package remains independently versioned at `0.1.0-alpha.1`
+- Platform acceptance/recovery: `a429c2b`, `c123ed7`; joint audit/refresh dispatches: `669dd43`, `ebe4f7c`
 - Capability protocol: `0.1.0-alpha.1`
 - Management protocol: `0.1.0-alpha.3`
 

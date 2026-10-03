@@ -2,7 +2,8 @@
 
 `capability-bus-official-ui` is the independent `ui.official.web` interface plugin. This repository is
 currently at **U4**: the U2/U3 views and catalog-driven management actions now use the accepted Core
-alpha.3 resident interface-plugin bootstrap and public local management transport.
+alpha.4 runtime/package with its alpha.3 resident interface-plugin management bootstrap. Capability
+protocol remains alpha.1; the UI package remains independently versioned at `0.1.0-alpha.1`.
 
 It is not a Core module. It does not import Core Python packages, read Core SQLite, keep a second
 registry/Grant/configuration database, use the owner credential, or call a private Core endpoint. Its
